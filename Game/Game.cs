@@ -5,6 +5,7 @@ using RogueSharp.Random;
 using System;
 using Weighted_Randomizer;
 using System.Collections.Generic;
+using OpenTK.Input;
 
 namespace RLGame
 {
@@ -68,8 +69,9 @@ namespace RLGame
 			_timeLineConsole = new RLConsole( _timeLineWidth, _timeLineHeight );
 
 			Maps = new List<DungeonMap>();
-			CommandSystem = new CommandSystem();
 			SchedulingSystem = new SchedulingSystem();
+			CommandSystem = new CommandSystem();
+			Player = new Player();
 			Timeline = new Timeline();
 			MessageLog = new MessageLog();
 			PlayerControls = new PlayerControls( _rootConsole );
@@ -130,7 +132,7 @@ namespace RLGame
 			}
 			else
 			{
-				CommandSystem.ActivateMonsters();
+				CommandSystem.AdvanceTime();
 				_renderRequired = true;
 			}
 		}

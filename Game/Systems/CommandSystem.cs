@@ -18,14 +18,14 @@ namespace RLGame.Systems
 			IsPlayerTurn = false;
 		}
 
-		public void ActivateMonsters() {
+		public void AdvanceTime() {
 			IScheduleable scheduleable = Game.SchedulingSystem.Get();
 			if ( scheduleable is Update )
 			{
 				Update update = scheduleable as Update;
 				update.UpdateCalled();
 				Game.SchedulingSystem.Add( update );
-				ActivateMonsters();
+				AdvanceTime();
 			}
 			else if ( scheduleable is Player )
 			{
@@ -41,7 +41,7 @@ namespace RLGame.Systems
 					monster.PerformAction( this );
 					Game.SchedulingSystem.Add( monster );
 				}
-				ActivateMonsters();
+				AdvanceTime();
 			}
 		}
 

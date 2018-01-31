@@ -1,4 +1,5 @@
 ﻿using RLGame.Core;
+using Action = RLGame.Actions.BaseActions.Action;
 using RLNET;
 using RogueSharp;
 using System;
@@ -17,8 +18,10 @@ namespace RLGame.Interfaces
 		int Defense { get; set; }
 		int DefenseChance { get; set; }
 		string Name { get; set; }
+		int Initiative { get; set; }
 		int Speed { get; set; }
 		double Regen { get; set; }
+		Action LastAction { get; set; }
 		List<Bodypart> Bodyparts { get; set; }
 
 		int Size();

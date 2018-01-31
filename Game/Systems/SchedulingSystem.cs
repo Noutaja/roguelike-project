@@ -24,7 +24,7 @@ namespace RLGame.Systems
 		// Add a new object to the schedule 
 		// Place it at the current time plus the object's Time property.
 		public void Add( IScheduleable scheduleable ) {
-			
+
 			int key = Time + scheduleable.Time;
 			if ( !_scheduleables.ContainsKey( key ) )
 			{
@@ -33,8 +33,8 @@ namespace RLGame.Systems
 			_scheduleables[key].Add( scheduleable );
 		}
 
-		public Boolean Contains(IScheduleable scheduleable ) {
-			foreach (var scheduleablesList in _scheduleables)
+		public Boolean Contains( IScheduleable scheduleable ) {
+			foreach ( var scheduleablesList in _scheduleables )
 			{
 				if ( scheduleablesList.Value.Contains( scheduleable ) )
 				{
@@ -45,7 +45,7 @@ namespace RLGame.Systems
 		}
 
 		// Remove a specific object from the schedule.
-		public void Remove( IScheduleable scheduleable ) {
+		public void Remove( IScheduleable scheduleable, bool removeFromTimeline ) {
 			//Create a dummy key/value pair
 			KeyValuePair<int, List<IScheduleable>> scheduleableListFound
 			  = new KeyValuePair<int, List<IScheduleable>>( -1, null );
@@ -62,37 +62,13 @@ namespace RLGame.Systems
 			}
 			if ( scheduleableListFound.Value != null )
 			{
-				//Remove the scheduleable from the list
-				scheduleableListFound.Value.Remove( scheduleable );
-				//If list is now empty, remove the list
-				if ( scheduleableListFound.Value.Count <= 0 )
+				//Remove the scheduleable from the timeline
+				if ( removeFromTimeline )
 				{
-					_scheduleables.Remove( scheduleableListFound.Key );
+					Game.Timeline.Remove( scheduleable );
 				}
-			}
-		}
 
-		// Remove a specific object from the schedule AND timeline.
-		// Used for when an monster is killed to remove it before it's action comes up again.
-		public void Remove( IScheduleable scheduleable, bool onKill ) {
-			//Create a dummy key/value pair
-			KeyValuePair<int, List<IScheduleable>> scheduleableListFound
-			  = new KeyValuePair<int, List<IScheduleable>>( -1, null );
-
-			foreach ( var scheduleablesList in _scheduleables )
-			{
-				//Search for a match
-				if ( scheduleablesList.Value.Contains( scheduleable ) )
-				{
-					//Copy the matching pair over the dummy
-					scheduleableListFound = scheduleablesList;
-					break;
-				}
-			}
-			if ( scheduleableListFound.Value != null )
-			{
 				//Remove the scheduleable from the list
-				Game.Timeline.Remove( scheduleable );
 				scheduleableListFound.Value.Remove( scheduleable );
 				//If list is now empty, remove the list
 				if ( scheduleableListFound.Value.Count <= 0 )
@@ -106,8 +82,8 @@ namespace RLGame.Systems
 		public IScheduleable Get() {
 			var firstScheduleableGroup = _scheduleables.First();
 			var firstScheduleable = firstScheduleableGroup.Value.First();
-			Game.Timeline.Add( firstScheduleableGroup.Key,firstScheduleable );
-			Remove( firstScheduleable );
+			Game.Timeline.Add( firstScheduleableGroup.Key, firstScheduleable );
+			Remove( firstScheduleable, false );
 			Time = firstScheduleableGroup.Key;
 			return firstScheduleable;
 		}

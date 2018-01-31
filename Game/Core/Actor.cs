@@ -23,9 +23,11 @@ namespace RLGame.Core
 		private int _defense;
 		private int _defenseChance;
 		private string _name;
+		private int _initiative;
 		private int _speed;
 		private double _regen;
 		private List<Bodypart> _bodyparts;
+		public Actions.BaseActions.Action LastAction { get; set; }
 
 		public List<Bodypart> Bodyparts {
 			get {
@@ -96,6 +98,15 @@ namespace RLGame.Core
 			}
 			set {
 				_name = value;
+			}
+		}
+
+		public int Initiative {
+			get {
+				return _initiative;
+			}
+			set {
+				_initiative = value;
 			}
 		}
 

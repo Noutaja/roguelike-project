@@ -31,7 +31,7 @@ namespace RLGame.Core
 			{
 				SetIsWalkable( monster.X, monster.Y, true );
 			}
-			Game.SchedulingSystem.Remove( player );
+			Game.SchedulingSystem.Remove( player, false );
 		}
 
 		public void PostLevelChange( bool down ) {
@@ -76,6 +76,7 @@ namespace RLGame.Core
 			_monsters.Remove( monster );
 			SetIsWalkable( monster.X, monster.Y, true );
 			Game.SchedulingSystem.Remove( monster, true );
+			Game.SchedulingSystem.update.UpdateEvent -= monster.OnUpdateEvent;
 
 		}
 

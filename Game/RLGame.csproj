@@ -69,6 +69,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\BaseActions\Action.cs" />
+    <Compile Include="Actions\BaseActions\CellAction.cs" />
+    <Compile Include="Actions\BaseActions\SelfAction.cs" />
+    <Compile Include="Actions\BaseActions\TargetAction.cs" />
+    <Compile Include="Actions\Wait.cs" />
+    <Compile Include="Actions\Walk.cs" />
     <Compile Include="Behaviors\StandardMoveAndAttack.cs" />
     <Compile Include="Bodyparts\Arm.cs" />
     <Compile Include="Bodyparts\Head.cs" />

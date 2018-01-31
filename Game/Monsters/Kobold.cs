@@ -30,7 +30,6 @@ namespace RLGame.Monsters
 
 
 			};
-
 			kobold.Bodyparts = bodyparts;
 			int health = kobold.CalculateSimpleHealth();
 
@@ -43,7 +42,7 @@ namespace RLGame.Monsters
 			kobold.SimpleHealth = health;
 			kobold.SimpleMaxHealth = health;
 			kobold.Name = "Kobold";
-			kobold.Speed = 30;
+			kobold.Initiative = 30;
 			kobold.Symbol = 'k';
 			kobold.Regen = 0;
 			return kobold;

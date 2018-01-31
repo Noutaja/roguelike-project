@@ -335,7 +335,7 @@ namespace RLGame.Systems
 			foreach ( var room in _map.Rooms )
 			{
 				// Each room has a 60% chance of having monsters
-				if ( Dice.Roll( "1D10" ) < 4 )
+				if ( Dice.Roll( "1D10" ) < 0 )
 				{
 					// Generate between 1 and 4 monsters
 					var numberOfMonsters = Dice.Roll( "1D4" );
