@@ -12,8 +12,6 @@ namespace RLGame.Core
 {
 	public class Player : Actor
 	{
-		public List<Action> Actions;
-
 		public Player() {
 			int headHealth = 15;
 			int torsoHealth = 50;
@@ -29,9 +27,10 @@ namespace RLGame.Core
 				new Leg(legHealth, false, 7),
 				new Leg(legHealth, false, 7)
 			};
-			Actions = new List<Action>();
-			Actions.Add( new Walk( this ));
-			Actions.Add( new Wait( this ) );
+			Actions = new List<Action> {
+				new Walk( this ),
+				new Wait( this )
+			};
 
 			Attack = 10;
 			AttackChance = 50;
@@ -41,7 +40,7 @@ namespace RLGame.Core
 			DefenseChance = 40;
 			Name = "Rogue";
 			Initiative = 20;
-			Speed = Game.Random.Next(1, 20);
+			Speed = 1;
 			Regen = 1;
 			Symbol = '@';
 			LastAction = new Wait(this);

@@ -55,7 +55,8 @@ namespace RLGame.Systems
 			{
 				didPlayerAct = CheckMovement( keyPress );
 			}
-			else if( keyPress.Key == RLKey.Keypad5){
+			else if ( keyPress.Key == RLKey.Keypad5 )
+			{
 				SelfAction wait = (SelfAction) player.Actions.Find( x => x.Name == "Wait" );
 				didPlayerAct = wait.Execute();
 			}
@@ -68,27 +69,28 @@ namespace RLGame.Systems
 				if ( Game.CurrentMap.CanMoveDownToNextLevel() )
 				{
 					Game.ChangeLevel( true );
-					didPlayerAct = true;
+					//didPlayerAct = true;
 				}
 				else if ( Game.CurrentMap.CanMoveUpToPreviousLevel() )
 				{
 					Game.ChangeLevel( false );
-					didPlayerAct = true;
+					//didPlayerAct = true;
 				}
 			}
 			else if ( keyPress.Key == RLKey.C )
 			{
 				Game.ChangeLevel( true );
-				didPlayerAct = true;
+				//didPlayerAct = true;
 			}
 			else if ( keyPress.Key == RLKey.E )
 			{
 				Game.CurrentMap.RevealMap();
-				didPlayerAct = true;
+				//didPlayerAct = true;
 			}
 
 			if ( didPlayerAct )
 			{
+				Game.SchedulingSystem.Add( player );
 				CommandSystem.EndPlayerTurn();
 			}
 			return didPlayerAct;

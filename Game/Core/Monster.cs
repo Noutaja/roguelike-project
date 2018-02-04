@@ -19,7 +19,7 @@ namespace RLGame.Core
 
 		public virtual void PerformAction(CommandSystem commandSystem ) {
 			var behavior = new StandardMoveAndAttack();
-			behavior.Act( this, commandSystem );
+			behavior.Act( this );
 		}
 
 		public void DrawStats( RLConsole statConsole, int position ) {

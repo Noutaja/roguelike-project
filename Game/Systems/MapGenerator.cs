@@ -19,7 +19,7 @@ namespace RLGame.Systems
 		private readonly int _mapLevel;
 		private readonly bool _movingDown;
 		private List<List<Rectangle>> _islands;
-		
+
 		private readonly DungeonMap _map;
 
 		public MapGenerator( int width, int height,
@@ -150,7 +150,7 @@ namespace RLGame.Systems
 					{
 						foreach ( List<Rectangle> island2 in tmpIslands )
 						{
-							
+
 							if ( island1 != island2 )
 							{
 								foreach ( Rectangle room2 in island2 )
@@ -335,7 +335,7 @@ namespace RLGame.Systems
 			foreach ( var room in _map.Rooms )
 			{
 				// Each room has a 60% chance of having monsters
-				if ( Dice.Roll( "1D10" ) < 0 )
+				if ( Dice.Roll( "1D10" ) < 3 )
 				{
 					// Generate between 1 and 4 monsters
 					var numberOfMonsters = Dice.Roll( "1D4" );
@@ -348,7 +348,7 @@ namespace RLGame.Systems
 						if ( randomRoomLocation != Point.Zero )
 						{
 							// Temporarily hard code this monster to be created at level 1
-							var monster = Kobold.Create( 1 );
+							var monster = new Kobold( 1 );
 							monster.X = randomRoomLocation.X;
 							monster.Y = randomRoomLocation.Y;
 							_map.AddMonster( monster );
@@ -367,7 +367,7 @@ namespace RLGame.Systems
 				if ( randomRoomLocation != Point.Zero )
 				{
 					// Temporarily hard code this monster to be created at level 1
-					var monster = Kobold.Create( 1 );
+					var monster = new Kobold( 1 );
 					monster.X = randomRoomLocation.X;
 					monster.Y = randomRoomLocation.Y;
 					_map.AddMonster( monster );

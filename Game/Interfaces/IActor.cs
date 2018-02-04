@@ -23,6 +23,7 @@ namespace RLGame.Interfaces
 		double Regen { get; set; }
 		Action LastAction { get; set; }
 		List<Bodypart> Bodyparts { get; set; }
+		List<Action> Actions { get; set; }
 
 		int Size();
 		bool IsHurt();

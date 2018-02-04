@@ -60,7 +60,7 @@ namespace RLGame
 			int seed = (int) DateTime.UtcNow.Ticks;
 			WeightedRandom = new StaticWeightedRandomizer<Bodypart>( seed );
 			Random = new DotNetRandom( seed );
-			string consoleTitle = $"RLTutorial Level 1 - Seed {seed}"; //Show the seed
+			string consoleTitle = $"RLGame Level 1 - Seed {seed}"; //Show the seed
 
 			_rootConsole = new RLRootConsole( fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle );
 			_mapConsole = new RLConsole( _mapWidth, _mapHeight );

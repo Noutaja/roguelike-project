@@ -1,4 +1,5 @@
-﻿using RLGame.Core;
+﻿using RLGame.Actions.BaseActions;
+using RLGame.Core;
 using RLGame.Interfaces;
 using RLGame.Systems;
 using RogueSharp;
@@ -12,7 +13,7 @@ namespace RLGame.Behaviors
 {
 	public class StandardMoveAndAttack : IBehavior
 	{
-		public bool Act( Monster monster, CommandSystem commandSystem ) {
+		public bool Act( Monster monster ) {
 			DungeonMap dungeonMap = Game.CurrentMap;
 			Player player = Game.Player;
 			FieldOfView monsterFov = new FieldOfView( dungeonMap );
@@ -37,7 +38,7 @@ namespace RLGame.Behaviors
 				dungeonMap.SetIsWalkable( monster.X, monster.Y, true );
 				dungeonMap.SetIsWalkable( player.X, player.Y, true );
 
-				PathFinder pathFinder = new PathFinder(dungeonMap, 1.41);
+				PathFinder pathFinder = new PathFinder( dungeonMap, 1.41 );
 				Path path = null;
 
 				try
@@ -58,12 +59,22 @@ namespace RLGame.Behaviors
 				dungeonMap.SetIsWalkable( monster.X, monster.Y, false );
 				dungeonMap.SetIsWalkable( player.X, player.Y, false );
 
-				// In the case that there was a path, tell the CommandSystem to move the monster
+				// In the case that there was a path, tell the monster to move
 				if ( path != null )
 				{
 					try
 					{
-						commandSystem.MoveMonster( monster, path.StepForward() );
+						if ( path.Length == 2 )
+						{
+							SelfAction action = (SelfAction) monster.Actions.Find( x => x.Name == "Wait" );
+							action.Execute();
+						}
+						else
+						{
+							CellAction action = (CellAction) monster.Actions.Find( x => x.Name == "Walk" );
+							action.Execute( path.StepForward() );
+						}
+						//commandSystem.MoveMonster( monster, path.StepForward() );
 					}
 					catch ( NoMoreStepsException )
 					{

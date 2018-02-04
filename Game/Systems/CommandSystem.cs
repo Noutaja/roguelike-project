@@ -1,5 +1,6 @@
 ﻿using RLGame.Core;
 using RLGame.Interfaces;
+using RLNET;
 using RogueSharp;
 using RogueSharp.DiceNotation;
 using System;
@@ -20,27 +21,23 @@ namespace RLGame.Systems
 
 		public void AdvanceTime() {
 			IScheduleable scheduleable = Game.SchedulingSystem.Get();
-			if ( scheduleable is Update )
+
+			if ( scheduleable is Player )
+			{
+				IsPlayerTurn = true;
+			}
+			else if ( scheduleable is Monster )
+			{
+				Monster monster = scheduleable as Monster;
+				monster.PerformAction( this );
+				Game.SchedulingSystem.Add( monster );
+				AdvanceTime();
+			}
+			else if ( scheduleable is Update )
 			{
 				Update update = scheduleable as Update;
 				update.UpdateCalled();
 				Game.SchedulingSystem.Add( update );
-				AdvanceTime();
-			}
-			else if ( scheduleable is Player )
-			{
-				IsPlayerTurn = true;
-				Game.SchedulingSystem.Add( Game.Player );
-			}
-			else
-			{
-				Monster monster = scheduleable as Monster;
-
-				if ( monster != null )
-				{
-					monster.PerformAction( this );
-					Game.SchedulingSystem.Add( monster );
-				}
 				AdvanceTime();
 			}
 		}

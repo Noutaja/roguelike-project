@@ -1,5 +1,6 @@
 ﻿using RLGame.Interfaces;
 using RLGame.Systems;
+using Action = RLGame.Actions.BaseActions.Action;
 using RLNET;
 using RogueSharp;
 using System;
@@ -27,7 +28,8 @@ namespace RLGame.Core
 		private int _speed;
 		private double _regen;
 		private List<Bodypart> _bodyparts;
-		public Actions.BaseActions.Action LastAction { get; set; }
+		public Action LastAction { get; set; }
+		public List<Action> Actions { get; set; }
 
 		public List<Bodypart> Bodyparts {
 			get {

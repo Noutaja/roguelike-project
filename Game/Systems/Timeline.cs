@@ -124,7 +124,10 @@ namespace RLGame.Systems
 					int timeDifference = Game.SchedulingSystem.Time - scheduleableTime;
 					int xPosition = ( timeLineLength + 10 ) - ( timeDifference );
 
-					
+					if ( mostRecent )
+					{
+						console.Print( xPosition, topPadding - 1 + i, timeDifference.ToString(), RLColor.White );
+					}
 
 					foreach ( IScheduleable scheduleable in scheduleableList )
 					{
@@ -139,15 +142,13 @@ namespace RLGame.Systems
 								//Add the key of only the most recent list above the timeline
 								if ( mostRecent )
 								{
-									console.Print( xPosition, topPadding - 1 + i, timeDifference.ToString(), RLColor.White );
-									console.Print( xPosition + 1, topPadding + 1 + i, actor.LastAction.Name, RLColor.White );
-									mostRecent = false;
+									console.Print( xPosition + 1, topPadding + 1 + i, ": "+actor.LastAction.Name, RLColor.White );
 								}
-
 								i++;
 							}
 						}
 					}
+					mostRecent = false;
 				}
 			}
 		}
