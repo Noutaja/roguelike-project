@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RLGame.Actions.BaseActions
+namespace RLGame.Interfaces.ActionTypes
 {
-	abstract public class CellAction : Action
+	public interface ICellAction
 	{
-		abstract public bool Execute( ICell cell );
+		bool Execute( ICell cell );
 	}
 }

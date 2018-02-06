@@ -17,7 +17,7 @@ namespace RLGame.Core
 		protected int SimpleHealth { get; set; }
 		protected int SimpleMaxHealth { get; set; }
 
-		public virtual void PerformAction(CommandSystem commandSystem ) {
+		public virtual void Activate() {
 			var behavior = new StandardMoveAndAttack();
 			behavior.Act( this );
 		}

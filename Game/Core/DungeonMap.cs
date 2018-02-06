@@ -80,13 +80,18 @@ namespace RLGame.Core
 
 		}
 
-		public Monster GetMonsterAt( int x, int y ) {
+		public Actor GetActorAt( int x, int y ) {
 			foreach ( Monster monster in _monsters )
 			{
 				if ( monster.X == x && monster.Y == y )
 				{
 					return monster;
 				}
+			}
+			Player player = Game.Player;
+			if ( player.X == x && player.Y == y )
+			{
+				return player;
 			}
 			return null;
 		}
@@ -200,6 +205,30 @@ namespace RLGame.Core
 					monster.DrawStats( statConsole, i );
 					i++;
 				}
+			}
+		}
+
+		public ICell GetAdjacentCell( int x, int y, Direction direction ) {
+			switch ( direction )
+			{
+				case Direction.UpLeft:
+					return GetCell( x - 1, y - 1 );
+				case Direction.Up:
+					return GetCell( x, y - 1 );
+				case Direction.UpRight:
+					return GetCell( x + 1, y - 1 );
+				case Direction.Left:
+					return GetCell( x - 1, y );
+				case Direction.Right:
+					return GetCell( x + 1, y );
+				case Direction.DownLeft:
+					return GetCell( x - 1, y + 1 );
+				case Direction.Down:
+					return GetCell( x, y + 1 );
+				case Direction.DownRight:
+					return GetCell( x + 1, y + 1 );
+				default:
+					return null;
 			}
 		}
 

@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RLGame.Actions.BaseActions
+namespace RLGame.Core
 {
-	abstract public class SelfAction : Action
+	public enum ActionTag
 	{
-		abstract public bool Execute();
+		Melee,
+		Movement,
+		Pass
 	}
 }

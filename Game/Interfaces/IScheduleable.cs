@@ -10,5 +10,6 @@ namespace RLGame.Interfaces
 	public interface IScheduleable
 	{
 		int Time { get; }
+		bool History { get; }
 	}
 }

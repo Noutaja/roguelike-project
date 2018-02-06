@@ -8,21 +8,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RLGame.Bodyparts;
 
 namespace RLGame.Core
 {
 	public class Actor : IActor, IDrawable, IScheduleable, IUpdateable
 	{
 		public Actor() {
+			
 			Update = Game.SchedulingSystem.update;
 			Update.UpdateEvent += OnUpdateEvent;
 		}
 		//IActor
-		private int _attack;
-		private int _attackChance;
 		private int _awareness;
-		private int _defense;
-		private int _defenseChance;
 		private string _name;
 		private int _initiative;
 		private int _speed;
@@ -49,21 +47,15 @@ namespace RLGame.Core
 			}
 		}
 
-		public int Attack {
+		public int Strength {
 			get {
-				return _attack;
-			}
-			set {
-				_attack = value;
-			}
-		}
-
-		public int AttackChance {
-			get {
-				return _attackChance;
-			}
-			set {
-				_attackChance = value;
+				Arm a = (Arm) GetBodypart( "Arm" );
+				if(a != null )
+				{
+					return a.Strength;
+				}
+				Head h = (Head) GetBodypart( "Head" );
+				return h.Strength;
 			}
 		}
 
@@ -73,24 +65,6 @@ namespace RLGame.Core
 			}
 			set {
 				_awareness = value;
-			}
-		}
-
-		public int Defense {
-			get {
-				return _defense;
-			}
-			set {
-				_defense = value;
-			}
-		}
-
-		public int DefenseChance {
-			get {
-				return _defenseChance;
-			}
-			set {
-				_defenseChance = value;
 			}
 		}
 
@@ -121,13 +95,15 @@ namespace RLGame.Core
 			}
 		}
 
-		public int Size() {
-			int size = 0;
-			foreach ( Bodypart bodypart in Bodyparts )
-			{
-				size += bodypart.Size;
+		public int Size {
+			get{
+				int size = 0;
+				foreach ( Bodypart bodypart in Bodyparts )
+				{
+					size += bodypart.Size;
+				}
+				return size;
 			}
-			return size;
 		}
 
 		public virtual Bodypart TakeDamage( int damage, Bodypart bodypart ) {
@@ -201,6 +177,11 @@ namespace RLGame.Core
 		public int Time {
 			get {
 				return Speed;
+			}
+		}
+		public bool History {
+			get {
+				return true;
 			}
 		}
 

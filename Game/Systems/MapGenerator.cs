@@ -348,7 +348,7 @@ namespace RLGame.Systems
 						if ( randomRoomLocation != Point.Zero )
 						{
 							// Temporarily hard code this monster to be created at level 1
-							var monster = new Kobold( 1 );
+							var monster = new Shade( 1 );
 							monster.X = randomRoomLocation.X;
 							monster.Y = randomRoomLocation.Y;
 							_map.AddMonster( monster );
@@ -358,7 +358,7 @@ namespace RLGame.Systems
 			}
 			var room1 = _map.Rooms.First();
 			var numberOfMonsters1 = Dice.Roll( "1D1" );
-			for ( int i = 0; i < 0; i++ )
+			for ( int i = 0; i < 1; i++ )
 			{
 				// Find a random walkable location in the room to place the monster
 				Point randomRoomLocation = _map.GetRandomWalkableLocationInRoom( room1 );
@@ -367,7 +367,7 @@ namespace RLGame.Systems
 				if ( randomRoomLocation != Point.Zero )
 				{
 					// Temporarily hard code this monster to be created at level 1
-					var monster = new Kobold( 1 );
+					var monster = new Shade( 1 );
 					monster.X = randomRoomLocation.X;
 					monster.Y = randomRoomLocation.Y;
 					_map.AddMonster( monster );

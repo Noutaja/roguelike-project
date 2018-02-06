@@ -1,4 +1,5 @@
 ﻿using RLGame.Core;
+using RLGame.Interfaces;
 using RogueSharp;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,29 @@ namespace RLGame.Actions.BaseActions
 		public double TimeMultiplier { get; protected set; }
 		public Actor Actor { get; protected set; }
 		public String Name { get; protected set; }
+		public List<ActionTag> Tags { get; protected set; }
+
+		protected Action() {
+			Tags = new List<ActionTag>();
+		}
 
 		protected ICell GetCell( int x, int y ) {
 			DungeonMap map = Game.CurrentMap;
 			return map.GetCell( x, y );
+		}
+
+		protected Actor GetActorAt(int x, int y) {
+			DungeonMap map = Game.CurrentMap;
+			return map.GetActorAt( x, y );
+		}
+
+		protected Actor GetActorAt(ICell cell ) {
+			DungeonMap map = Game.CurrentMap;
+			return map.GetActorAt( cell.X, cell.Y );
+		}
+
+		protected void AddToScheduling(IScheduleable scheduleable) {
+			Game.SchedulingSystem.Add( scheduleable );
 		}
 
 		protected void ModifySpeed() {

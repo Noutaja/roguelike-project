@@ -70,9 +70,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\BaseActions\Action.cs" />
-    <Compile Include="Actions\BaseActions\CellAction.cs" />
-    <Compile Include="Actions\BaseActions\SelfAction.cs" />
-    <Compile Include="Actions\BaseActions\TargetAction.cs" />
+    <Compile Include="Actions\BaseActions\AttackAction.cs" />
+    <Compile Include="Actions\Bite.cs" />
+    <Compile Include="Core\ActionTag.cs" />
+    <Compile Include="Core\Attack.cs" />
+    <Compile Include="Core\TimelineEvent.cs" />
+    <Compile Include="Interfaces\ActionTypes\ICellAction.cs" />
+    <Compile Include="Interfaces\ActionTypes\ISelfAction.cs" />
+    <Compile Include="Interfaces\ActionTypes\ITargetAction.cs" />
+    <Compile Include="Actions\Punch.cs" />
     <Compile Include="Actions\Wait.cs" />
     <Compile Include="Actions\Walk.cs" />
     <Compile Include="Behaviors\StandardMoveAndAttack.cs" />
@@ -99,6 +105,7 @@
     <Compile Include="Interfaces\IScheduleable.cs" />
     <Compile Include="Interfaces\IUpdateable.cs" />
     <Compile Include="Monsters\Kobold.cs" />
+    <Compile Include="Monsters\Shade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Systems\CommandSystem.cs" />
     <Compile Include="Systems\MapGenerator.cs" />

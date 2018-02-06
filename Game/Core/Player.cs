@@ -19,30 +19,28 @@ namespace RLGame.Core
 			int legHealth = 20;
 			Bodyparts = new List<Bodypart>{
 				new Torso(torsoHealth, true, 15),
-				new Head(headHealth, true, 5),
+				new Head(headHealth, true, 4),
 
-				new Arm(armHealth, false, 6),
-				new Arm(armHealth, false, 6),
+				new Arm(armHealth, false, 6, 10),
+				new Arm(armHealth, false, 6, 10),
 
 				new Leg(legHealth, false, 7),
 				new Leg(legHealth, false, 7)
 			};
-			Actions = new List<Action> {
-				new Walk( this ),
-				new Wait( this )
-			};
 
-			Attack = 10;
-			AttackChance = 50;
+
 			Awareness = 15;
 			Color = Colors.Player;
-			Defense = 2;
-			DefenseChance = 40;
 			Name = "Rogue";
-			Initiative = 20;
+			Initiative = 50;
 			Speed = 1;
 			Regen = 1;
 			Symbol = '@';
+			Actions = new List<Action> {
+				new Walk( this ),
+				new Wait( this ),
+				new Punch(this){damage = Strength}
+			};
 			LastAction = new Wait(this);
 		}
 
@@ -53,9 +51,10 @@ namespace RLGame.Core
 				{
 					bool healed = false;
 					Bodypart bodypart = GetBodypart( false );
-					if ( bodypart.Health + Regen <= bodypart.MaxHealth )
+					int newHealth = bodypart.Health + (int) Regen;
+					if ( newHealth <= bodypart.MaxHealth && bodypart.Health > 0 )
 					{
-						bodypart.Health += (int) Regen;
+						bodypart.Health = newHealth;
 						healed = true;
 					}
 					if ( healed )
@@ -66,13 +65,12 @@ namespace RLGame.Core
 
 		public void DrawStats( RLConsole statConsole ) {
 			statConsole.Print( 1, 1, $"Name:    {Name}", Colors.Text );
-			statConsole.Print( 1, 3, $"Attack:  {Attack} ({AttackChance}%)", Colors.Text );
-			statConsole.Print( 1, 5, $"Defense: {Defense} ({DefenseChance}%)", Colors.Text );
+			statConsole.Print( 1, 3, $"Strength:  {Strength}", Colors.Text );
 
 			int i = 0;
 			foreach ( Bodypart bodypart in Bodyparts )
 			{
-				int yPosition = 7 + ( i * 2 );
+				int yPosition = 5 + ( i * 2 );
 
 				// Figure out the width of the health bar by dividing current health by max health
 				int width = Convert.ToInt32( ( (double) bodypart.Health / (double) bodypart.MaxHealth ) * 16.0 );

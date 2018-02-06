@@ -12,20 +12,17 @@ namespace RLGame.Interfaces
 {
 	public interface IActor
 	{
-		int Attack { get; set; }
-		int AttackChance { get; set; }
+		int Strength { get; }
 		int Awareness { get; set; }
-		int Defense { get; set; }
-		int DefenseChance { get; set; }
 		string Name { get; set; }
 		int Initiative { get; set; }
 		int Speed { get; set; }
+		int Size { get; }
 		double Regen { get; set; }
 		Action LastAction { get; set; }
 		List<Bodypart> Bodyparts { get; set; }
 		List<Action> Actions { get; set; }
-
-		int Size();
+		
 		bool IsHurt();
 		bool IsDying();
 		Bodypart TakeDamage(int damage, Bodypart bodypart);

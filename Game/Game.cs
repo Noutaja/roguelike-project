@@ -31,9 +31,6 @@ namespace RLGame
 		private static readonly int _timeLineHeight = 11;
 		private static RLConsole _timeLineConsole;
 
-		private static bool _renderRequired = true;
-		private static bool _newMap = true;
-
 		private static CommandSystem _commandSystem;
 		public static CommandSystem CommandSystem {
 			get { return _commandSystem; }
@@ -54,6 +51,7 @@ namespace RLGame
 		public static List<DungeonMap> Maps { get; private set; }
 
 		static void Main( string[] args ) {
+			Keyboard.GetState();//IT JUST WERKS NOW?? PLS FIX :D (OnRootConsoleUpdate)
 			string fontFileName = "terminal8x8.png";
 
 			//Initialize RNG
@@ -104,7 +102,6 @@ namespace RLGame
 				CommandSystem = new CommandSystem();
 				Timeline.Clear();
 				_rootConsole.Title = $"Level {CurrentMap.MapLevel}";
-				_newMap = true;
 				Maps.Add( CurrentMap );
 			}
 			else
@@ -116,7 +113,6 @@ namespace RLGame
 				CommandSystem = new CommandSystem();
 				Timeline.Clear();
 				_rootConsole.Title = $"Level {CurrentMap.MapLevel}";
-				_newMap = true;
 			}
 		}
 
@@ -124,27 +120,19 @@ namespace RLGame
 			RLKeyPress keyPress = _rootConsole.Keyboard.GetKeyPress();
 			if ( CommandSystem.IsPlayerTurn )
 			{
-				_renderRequired = false;
 				if ( keyPress != null )
 				{
-					_renderRequired = PlayerControls.CheckInput( keyPress );
+					PlayerControls.CheckInput( keyPress );
 				}
 			}
 			else
 			{
 				CommandSystem.AdvanceTime();
-				_renderRequired = true;
 			}
 		}
 
 		private static void OnRootConsoleRender( object sender, UpdateEventArgs e ) {
-			if ( _newMap )
-			{
-				_newMap = false;
-				_renderRequired = true;
-			}
-			//if ( _renderRequired )
-			{
+			
 				_mapConsole.Clear();
 				_statConsole.Clear();
 				_messageConsole.Clear();
@@ -166,7 +154,7 @@ namespace RLGame
 					_rootConsole, 0, 0 );
 
 				_rootConsole.Draw();
-			}
+			
 		}
 	}
 }

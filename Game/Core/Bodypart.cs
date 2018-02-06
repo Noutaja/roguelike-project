@@ -9,9 +9,9 @@ namespace RLGame.Core
 {
 	public class Bodypart : IBodypart
 	{
-		private int _health { get; set; }
 		public BodypartType partType { get; set; }
 		public string Name { get; set; }
+		private int _health { get; set; }
 		public int Health {
 			get { return _health; }
 			set {

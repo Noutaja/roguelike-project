@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RLGame.Actions.BaseActions
+namespace RLGame.Interfaces.ActionTypes
 {
-	abstract public class TargetAction : Action
+	public interface ITargetAction
 	{
-		abstract public bool Execute( Actor actor );
+		bool Execute( Actor actor );
 	}
 }

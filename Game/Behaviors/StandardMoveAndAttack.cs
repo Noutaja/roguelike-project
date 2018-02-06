@@ -1,6 +1,7 @@
 ﻿using RLGame.Actions.BaseActions;
 using RLGame.Core;
 using RLGame.Interfaces;
+using RLGame.Interfaces.ActionTypes;
 using RLGame.Systems;
 using RogueSharp;
 using System;
@@ -66,15 +67,14 @@ namespace RLGame.Behaviors
 					{
 						if ( path.Length == 2 )
 						{
-							SelfAction action = (SelfAction) monster.Actions.Find( x => x.Name == "Wait" );
-							action.Execute();
+							ICellAction action = (ICellAction) monster.Actions.Find( x => x.Tags.Any( y => y == ActionTag.Melee ) );
+							action.Execute( path.StepForward() );
 						}
 						else
 						{
-							CellAction action = (CellAction) monster.Actions.Find( x => x.Name == "Walk" );
+							ICellAction action = (ICellAction) monster.Actions.Find( x => x.Name == "Walk" );
 							action.Execute( path.StepForward() );
 						}
-						//commandSystem.MoveMonster( monster, path.StepForward() );
 					}
 					catch ( NoMoreStepsException )
 					{

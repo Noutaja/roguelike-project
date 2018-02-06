@@ -10,7 +10,8 @@ namespace RLGame.Bodyparts
 {
 	class Head : Bodypart
 	{
-		public Head( int maxHealth, bool isVital, int size ) : base( maxHealth, isVital, size ) {
+		public int Strength = 1;
+		public Head( int maxHealth, bool isVital, int size) : base( maxHealth, isVital, size ) {
 			Name = "Head";
 			partType = BodypartType.Head;
 		}

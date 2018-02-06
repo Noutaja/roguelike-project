@@ -56,15 +56,29 @@ namespace RLGame.Systems
 
 		public void Add( int time, IScheduleable scheduleable ) {
 			int currentTime = Game.SchedulingSystem.Time;
-			if ( VisibleActors.Contains( scheduleable as Actor ) )
+			if ( scheduleable.History )
 			{
-				if ( !_scheduleables.ContainsKey( time ) )
+				if ( scheduleable is Actor )
 				{
-					_scheduleables.Add( time, new List<IScheduleable>() );
+					if ( VisibleActors.Contains( scheduleable as Actor ) )
+					{
+						if ( !_scheduleables.ContainsKey( time ) )
+						{
+							_scheduleables.Add( time, new List<IScheduleable>() );
+						}
+						_scheduleables[time].Add( scheduleable );
+						//Remove too old lists
+						Cull();
+					} 
 				}
-				_scheduleables[time].Add( scheduleable );
-				//Remove too old lists
-				Cull();
+				else
+				{
+					if ( !_scheduleables.ContainsKey( time ) )
+					{
+						_scheduleables.Add( time, new List<IScheduleable>() );
+					}
+					_scheduleables[time].Add( scheduleable );
+				}
 			}
 		}
 
@@ -106,11 +120,42 @@ namespace RLGame.Systems
 
 		public void Draw( RLConsole console ) {
 			int topPadding = 3;
+			int leftPadding = 10;
 			int currentTime = Game.SchedulingSystem.Time;
-			bool mostRecent = true;
-			DrawGraph( console, topPadding );
+			DrawGraph( console, topPadding, leftPadding );
 
 			Cull();
+			DrawEvents( console, topPadding, leftPadding, currentTime );
+			DrawActors( console, topPadding, leftPadding, currentTime );
+		}
+
+		private void DrawEvents( RLConsole console, int topPadding, int leftPadding, int currentTime ) {
+			//Begin with the newest entry
+			foreach ( var scheduleables in _scheduleables.Reverse() )
+			{
+				//Skip the first entry(ongoing turn)
+				//if ( scheduleables.Key != currentTime )
+				{
+					List<IScheduleable> scheduleableList = scheduleables.Value;
+					int scheduleableTime = scheduleables.Key;
+					
+					int timeDifference = Game.SchedulingSystem.Time - scheduleableTime;
+					int xPosition = ( timeLineLength + leftPadding ) - ( timeDifference );
+
+					foreach ( IScheduleable scheduleable in scheduleableList )
+					{
+						if ( scheduleable is TimelineEvent )
+						{
+							TimelineEvent e = scheduleable as TimelineEvent;
+							console.Print( xPosition, topPadding + 1, e.Symbol.ToString(), e.Color );
+						}
+					}
+				}
+			}
+		}
+
+		private void DrawActors( RLConsole console, int topPadding, int leftPadding, int currentTime ) {
+			bool mostRecent = true;
 			//Begin with the newest entry
 			foreach ( var scheduleables in _scheduleables.Reverse() )
 			{
@@ -122,40 +167,44 @@ namespace RLGame.Systems
 
 					int i = 0;
 					int timeDifference = Game.SchedulingSystem.Time - scheduleableTime;
-					int xPosition = ( timeLineLength + 10 ) - ( timeDifference );
+					int xPosition = ( timeLineLength + leftPadding ) - ( timeDifference );
 
-					if ( mostRecent )
-					{
-						console.Print( xPosition, topPadding - 1 + i, timeDifference.ToString(), RLColor.White );
-					}
+					
 
 					foreach ( IScheduleable scheduleable in scheduleableList )
 					{
-						if (scheduleable is Actor)
+						if ( scheduleable is Actor )
 						{
 							Actor actor = scheduleable as Actor;
 							//Draw on the timeline only if the actor is visible
 							if ( VisibleActors.Contains( actor ) )
 							{
-								console.Print( xPosition, topPadding + 1 + i, actor.Symbol.ToString(), actor.Color );
+								console.Print( xPosition, topPadding + 2 + i, actor.Symbol.ToString(), actor.Color );
 
+								if ( mostRecent )
+								{
+									console.Print( xPosition, topPadding - 1 + i, timeDifference.ToString(), RLColor.White );
+								}
 								//Add the key of only the most recent list above the timeline
 								if ( mostRecent )
 								{
-									console.Print( xPosition + 1, topPadding + 1 + i, ": "+actor.LastAction.Name, RLColor.White );
+									console.Print( xPosition + 1, topPadding + 2 + i, ": " + actor.LastAction.Name, RLColor.White );
 								}
 								i++;
 							}
 						}
 					}
-					mostRecent = false;
+					if ( scheduleableList.OfType<Actor>().Any() )
+					{
+						mostRecent = false;
+					}
 				}
 			}
 		}
 
-		private void DrawGraph( RLConsole console, int topPadding ) {
+		private void DrawGraph( RLConsole console, int topPadding, int leftPadding ) {
 			int tmp = 0;
-			for ( int i = 10; i < timeLineLength + 10; i++ )
+			for ( int i = leftPadding; i < timeLineLength + leftPadding; i++ )
 			{
 				if ( i % 10 == 0 )
 					console.Print( i, topPadding - 2, ( timeLineLength - tmp ).ToString(), RLColor.White );
@@ -163,14 +212,14 @@ namespace RLGame.Systems
 				tmp++;
 			}
 			console.Print( 1, topPadding, "Timeline:", RLColor.White );
-			for ( int i = 10; i < timeLineLength + 10; i++ )
+			for ( int i = leftPadding; i < timeLineLength + leftPadding; i++ )
 			{
 				if ( i % 10 == 0 )
 					console.Print( i, topPadding, "|", RLColor.White );
 				else
 					console.Print( i, topPadding, "-", RLColor.White );
 			}
-			console.Print( timeLineLength + 10, topPadding, "0", RLColor.White );
+			console.Print( timeLineLength + leftPadding, topPadding, "0", RLColor.White );
 		}
 	}
 }
