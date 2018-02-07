@@ -11,33 +11,33 @@ namespace RLGame
 {
 	public static class Game
 	{
-		private static readonly int _screenWidth = 100;
-		private static readonly int _screenHeight = 70;
+		private static readonly int SCREENWIDTH = 100;
+		private static readonly int SCREENHEIGHT = 70;
 		private static RLRootConsole _rootConsole;
 
-		private static readonly int _mapWidth = 80;
-		private static readonly int _mapHeight = 48;
+		private static readonly int MAPWIDTH = 80;
+		private static readonly int MAPHEIGHT = 48;
 		private static RLConsole _mapConsole;
 
-		private static readonly int _messageWidth = 80;
-		private static readonly int _messageHeight = 11;
+		private static readonly int MESSAGEWIDTH = 80;
+		private static readonly int MESSAGEHEIGHT = 11;
 		private static RLConsole _messageConsole;
 
-		private static readonly int _statWidth = 20;
-		private static readonly int _statHeight = 70;
+		private static readonly int STATWIDTH = 20;
+		private static readonly int STATHEIGHT = 70;
 		private static RLConsole _statConsole;
 
-		private static readonly int _timeLineWidth = 80;
-		private static readonly int _timeLineHeight = 11;
+		private static readonly int TIMELINEWIDTH = 80;
+		private static readonly int TIMELINEHEIGHT = 11;
 		private static RLConsole _timeLineConsole;
 
-		private static CommandSystem _commandSystem;
-		public static CommandSystem CommandSystem {
-			get { return _commandSystem; }
+		private static GameController _gameController;
+		public static GameController GameController {
+			get { return _gameController; }
 			private set {
-				_commandSystem = value;
+				_gameController = value;
 				if ( PlayerControls != null )
-					PlayerControls.CommandSystem = value;
+					PlayerControls.GameController = value;
 			}
 		}
 		public static SchedulingSystem SchedulingSystem { get; private set; }
@@ -46,7 +46,6 @@ namespace RLGame
 		public static PlayerControls PlayerControls { get; private set; }
 		public static IRandom Random { get; private set; }
 		public static IWeightedRandomizer<Bodypart> WeightedRandom;
-		public static Player Player { get; set; }
 		public static DungeonMap CurrentMap { get; private set; }
 		public static List<DungeonMap> Maps { get; private set; }
 
@@ -58,25 +57,22 @@ namespace RLGame
 			int seed = (int) DateTime.UtcNow.Ticks;
 			WeightedRandom = new StaticWeightedRandomizer<Bodypart>( seed );
 			Random = new DotNetRandom( seed );
-			string consoleTitle = $"RLGame Level 1 - Seed {seed}"; //Show the seed
+			string consoleTitle = $"RLGame Seed {seed}"; //Show the seed
 
-			_rootConsole = new RLRootConsole( fontFileName, _screenWidth, _screenHeight, 8, 8, 1f, consoleTitle );
-			_mapConsole = new RLConsole( _mapWidth, _mapHeight );
-			_messageConsole = new RLConsole( _messageWidth, _messageHeight );
-			_statConsole = new RLConsole( _statWidth, _statHeight );
-			_timeLineConsole = new RLConsole( _timeLineWidth, _timeLineHeight );
+			_rootConsole = new RLRootConsole( fontFileName, SCREENWIDTH, SCREENHEIGHT, 8, 8, 1f, consoleTitle );
+			_mapConsole = new RLConsole( MAPWIDTH, MAPHEIGHT );
+			_messageConsole = new RLConsole( MESSAGEWIDTH, MESSAGEHEIGHT );
+			_statConsole = new RLConsole( STATWIDTH, STATHEIGHT );
+			_timeLineConsole = new RLConsole( TIMELINEWIDTH, TIMELINEHEIGHT );
 
 			Maps = new List<DungeonMap>();
 			SchedulingSystem = new SchedulingSystem();
-			CommandSystem = new CommandSystem();
-			Player = new Player();
+			GameController = new GameController(MAPWIDTH, MAPHEIGHT);
+			GameController.Initialize();
 			Timeline = new Timeline();
 			MessageLog = new MessageLog();
 			PlayerControls = new PlayerControls( _rootConsole );
-			MapGenerator mapGenerator = new MapGenerator( _mapWidth, _mapHeight, 50, 8, 4, 1, true );
-			CurrentMap = mapGenerator.CreateMap();
-			CurrentMap.UpdatePlayerFieldOfView();
-			Maps.Add( CurrentMap );
+			
 
 			MessageLog.Add( $"Level created with seed '{seed}'" );
 
@@ -85,40 +81,9 @@ namespace RLGame
 			_rootConsole.Run();
 		}
 
-		public static void ChangeLevel( bool down ) {
-			int newLevel = CurrentMap.MapLevel;
-			if ( down == true )
-				newLevel++;
-			else
-				newLevel--;
-			CurrentMap.PreLevelChange();
-
-			if ( Maps.Count < newLevel )
-			{
-				MapGenerator mapGenerator = new MapGenerator( _mapWidth, _mapHeight, 50, 8, 4, newLevel, down );
-				CurrentMap = mapGenerator.CreateMap();
-				MessageLog = new MessageLog();
-				MessageLog.Add( $"Entering level {CurrentMap.MapLevel}" );
-				CommandSystem = new CommandSystem();
-				Timeline.Clear();
-				_rootConsole.Title = $"Level {CurrentMap.MapLevel}";
-				Maps.Add( CurrentMap );
-			}
-			else
-			{
-				CurrentMap = Maps[newLevel - 1];
-				CurrentMap.PostLevelChange( down );
-				MessageLog = new MessageLog();
-				MessageLog.Add( $"Entering level {CurrentMap.MapLevel}" );
-				CommandSystem = new CommandSystem();
-				Timeline.Clear();
-				_rootConsole.Title = $"Level {CurrentMap.MapLevel}";
-			}
-		}
-
 		private static void OnRootConsoleUpdate( object sender, UpdateEventArgs e ) {
 			RLKeyPress keyPress = _rootConsole.Keyboard.GetKeyPress();
-			if ( CommandSystem.IsPlayerTurn )
+			if ( GameController.IsPlayerTurn )
 			{
 				if ( keyPress != null )
 				{
@@ -127,7 +92,7 @@ namespace RLGame
 			}
 			else
 			{
-				CommandSystem.AdvanceTime();
+				GameController.AdvanceTime();
 			}
 		}
 
@@ -138,19 +103,19 @@ namespace RLGame
 				_messageConsole.Clear();
 				_timeLineConsole.Clear();
 
-				CurrentMap.Draw( _mapConsole, _statConsole, _timeLineConsole );
-				Player.Draw( _mapConsole, CurrentMap );
-				Player.DrawStats( _statConsole );
+				GameController.CurrentMap.Draw( _mapConsole, _statConsole, _timeLineConsole );
+				GameController.Player.Draw( _mapConsole, GameController.CurrentMap );
+				GameController.Player.DrawStats( _statConsole );
 				MessageLog.Draw( _messageConsole );
 				Timeline.Draw( _timeLineConsole );
 
-				RLConsole.Blit( _mapConsole, 0, 0, _mapWidth, _mapHeight,
-					_rootConsole, 0, _timeLineHeight );
-				RLConsole.Blit( _statConsole, 0, 0, _statWidth, _statHeight,
-					_rootConsole, _mapWidth, 0 );
-				RLConsole.Blit( _messageConsole, 0, 0, _messageWidth, _messageHeight,
-					_rootConsole, 0, _screenHeight - _messageHeight );
-				RLConsole.Blit( _timeLineConsole, 0, 0, _timeLineWidth, _timeLineHeight,
+				RLConsole.Blit( _mapConsole, 0, 0, MAPWIDTH, MAPHEIGHT,
+					_rootConsole, 0, TIMELINEHEIGHT );
+				RLConsole.Blit( _statConsole, 0, 0, STATWIDTH, STATHEIGHT,
+					_rootConsole, MAPWIDTH, 0 );
+				RLConsole.Blit( _messageConsole, 0, 0, MESSAGEWIDTH, MESSAGEHEIGHT,
+					_rootConsole, 0, SCREENHEIGHT - MESSAGEHEIGHT );
+				RLConsole.Blit( _timeLineConsole, 0, 0, TIMELINEWIDTH, TIMELINEHEIGHT,
 					_rootConsole, 0, 0 );
 
 				_rootConsole.Draw();

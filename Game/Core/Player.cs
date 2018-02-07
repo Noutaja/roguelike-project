@@ -31,7 +31,7 @@ namespace RLGame.Core
 
 			Awareness = 15;
 			Color = Colors.Player;
-			Name = "Rogue";
+			Name = "Adventurer";
 			Initiative = 50;
 			Speed = 1;
 			Regen = 1;
@@ -64,8 +64,8 @@ namespace RLGame.Core
 		}
 
 		public void DrawStats( RLConsole statConsole ) {
-			statConsole.Print( 1, 1, $"Name:    {Name}", Colors.Text );
-			statConsole.Print( 1, 3, $"Strength:  {Strength}", Colors.Text );
+			statConsole.Print( 1, 1, $"Name: {Name}", Colors.Text );
+			statConsole.Print( 1, 3, $"Strength: {Strength}", Colors.Text );
 
 			int i = 0;
 			foreach ( Bodypart bodypart in Bodyparts )

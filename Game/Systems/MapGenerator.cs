@@ -11,13 +11,13 @@ namespace RLGame.Systems
 {
 	public class MapGenerator
 	{
-		private readonly int _width;
-		private readonly int _height;
-		private readonly int _maxRooms;
-		private readonly int _roomMaxSize;
-		private readonly int _roomMinSize;
-		private readonly int _mapLevel;
-		private readonly bool _movingDown;
+		private readonly int WIDTH;
+		private readonly int HEIGHT;
+		private readonly int MAXROOMS;
+		private readonly int ROOMMAXSIZE;
+		private readonly int ROOMMINSIZE;
+		private readonly int MAPLEVEL;
+		private readonly bool MOVINGDOWN;
 		private List<List<Rectangle>> _islands;
 
 		private readonly DungeonMap _map;
@@ -25,29 +25,29 @@ namespace RLGame.Systems
 		public MapGenerator( int width, int height,
 		int maxRooms, int roomMaxSize, int roomMinSize,
 		int mapLevel, bool movingDown ) {
-			_width = width;
-			_height = height;
-			_maxRooms = maxRooms;
-			_roomMaxSize = roomMaxSize;
-			_roomMinSize = roomMinSize;
-			_mapLevel = mapLevel;
-			_movingDown = movingDown;
+			WIDTH = width;
+			HEIGHT = height;
+			MAXROOMS = maxRooms;
+			ROOMMAXSIZE = roomMaxSize;
+			ROOMMINSIZE = roomMinSize;
+			MAPLEVEL = mapLevel;
+			MOVINGDOWN = movingDown;
 			_map = new DungeonMap();
 		}
 
 		public DungeonMap CreateMap() {
 			// Set the properties of all cells to false
-			_map.Initialize( _width, _height );
-			_map.MapLevel = _mapLevel;
+			_map.Initialize( WIDTH, HEIGHT );
+			_map.MapLevel = MAPLEVEL;
 
 			// Try to place as many rooms as the specified maxRooms
-			for ( int i = 0; i < _maxRooms; i++ )
+			for ( int i = 0; i < MAXROOMS; i++ )
 			{
 				// Determine the size and position of the room randomly
-				int roomWidth = Game.Random.Next( _roomMinSize, _roomMaxSize );
-				int roomHeight = Game.Random.Next( _roomMinSize, _roomMaxSize );
-				int roomXPosition = Game.Random.Next( 0, _width - roomWidth - 1 );
-				int roomYPosition = Game.Random.Next( 0, _height - roomHeight - 1 );
+				int roomWidth = Game.Random.Next( ROOMMINSIZE, ROOMMAXSIZE );
+				int roomHeight = Game.Random.Next( ROOMMINSIZE, ROOMMAXSIZE );
+				int roomXPosition = Game.Random.Next( 0, WIDTH - roomWidth - 1 );
+				int roomYPosition = Game.Random.Next( 0, HEIGHT - roomHeight - 1 );
 
 				var newRoom = new Rectangle( roomXPosition, roomYPosition,
 				  roomWidth, roomHeight );
@@ -265,7 +265,7 @@ namespace RLGame.Systems
 		}
 
 		private void CreateStairs() {
-			if ( _movingDown )
+			if ( MOVINGDOWN )
 			{
 				_map.StairsUp = new Stairs {
 					X = _map.Rooms.First().Center.X + 1,
@@ -319,7 +319,7 @@ namespace RLGame.Systems
 		}
 
 		private void PlacePlayer() {
-			Player player = Game.Player;
+			Player player = Game.GameController.Player;
 			if ( player == null )
 			{
 				player = new Player();

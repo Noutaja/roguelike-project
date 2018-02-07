@@ -31,11 +31,15 @@ namespace RLGame.Core
 			//Check if anything is hit
 			foreach ( ICell cell in _area )
 			{
-				Actor actor = GetActorAt( cell.X, cell.Y );
-				if ( actor != null )
+				if ( cell != null )
 				{
-					_targets.Add( actor );
+					Actor actor = GetActorAt( cell.X, cell.Y );
+					if ( actor != null )
+					{
+						_targets.Add( actor );
+					}
 				}
+				else { Console.WriteLine("CELL NULL!!!"); }
 			}
 			//Deal damage
 			if ( !_targets.Any() )
@@ -62,7 +66,7 @@ namespace RLGame.Core
 						}
 						else if ( defender is Monster )
 						{
-							Game.CurrentMap.RemoveMonster( (Monster) defender );
+							Game.GameController.CurrentMap.RemoveMonster( (Monster) defender );
 
 							Game.MessageLog.Add( $"  {defender.Name} died." );
 						}
@@ -81,7 +85,7 @@ namespace RLGame.Core
 		}
 
 		private Actor GetActorAt( int x, int y ) {
-			DungeonMap map = Game.CurrentMap;
+			DungeonMap map = Game.GameController.CurrentMap;
 			return map.GetActorAt( x, y );
 		}
 

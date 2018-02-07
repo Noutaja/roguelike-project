@@ -10,13 +10,12 @@ namespace RLGame.Systems
 {
 	public class SchedulingSystem
 	{
-		public int Time;
+		public int Time { get; private set; }
 		public Update update;
-		private readonly SortedDictionary<int, List<IScheduleable>> _scheduleables;
-
+		public readonly SortedDictionary<int, List<IScheduleable>> SCHEDULEABLES;
 		public SchedulingSystem() {
 			Time = 0;
-			_scheduleables = new SortedDictionary<int, List<IScheduleable>>();
+			SCHEDULEABLES = new SortedDictionary<int, List<IScheduleable>>();
 			update = new Update();
 			Add( update );
 		}
@@ -26,15 +25,15 @@ namespace RLGame.Systems
 		public void Add( IScheduleable scheduleable ) {
 
 			int key = Time + scheduleable.Time;
-			if ( !_scheduleables.ContainsKey( key ) )
+			if ( !SCHEDULEABLES.ContainsKey( key ) )
 			{
-				_scheduleables.Add( key, new List<IScheduleable>() );
+				SCHEDULEABLES.Add( key, new List<IScheduleable>() );
 			}
-			_scheduleables[key].Add( scheduleable );
+			SCHEDULEABLES[key].Add( scheduleable );
 		}
 
 		public Boolean Contains( IScheduleable scheduleable ) {
-			foreach ( var scheduleablesList in _scheduleables )
+			foreach ( var scheduleablesList in SCHEDULEABLES )
 			{
 				if ( scheduleablesList.Value.Contains( scheduleable ) )
 				{
@@ -50,7 +49,7 @@ namespace RLGame.Systems
 			KeyValuePair<int, List<IScheduleable>> scheduleableListFound
 			  = new KeyValuePair<int, List<IScheduleable>>( -1, null );
 
-			foreach ( var scheduleablesList in _scheduleables )
+			foreach ( var scheduleablesList in SCHEDULEABLES )
 			{
 				//Search for a match
 				if ( scheduleablesList.Value.Contains( scheduleable ) )
@@ -73,14 +72,14 @@ namespace RLGame.Systems
 				//If list is now empty, remove the list
 				if ( scheduleableListFound.Value.Count <= 0 )
 				{
-					_scheduleables.Remove( scheduleableListFound.Key );
+					SCHEDULEABLES.Remove( scheduleableListFound.Key );
 				}
 			}
 		}
 
 		// Get the next object whose turn it is from the schedule. Advance time if necessary
 		public IScheduleable Get() {
-			var firstScheduleableGroup = _scheduleables.First();
+			var firstScheduleableGroup = SCHEDULEABLES.First();
 			var firstScheduleable = firstScheduleableGroup.Value.First();
 			Game.Timeline.Add( firstScheduleableGroup.Key, firstScheduleable );
 			Remove( firstScheduleable, false );
@@ -88,15 +87,10 @@ namespace RLGame.Systems
 			return firstScheduleable;
 		}
 
-		// Get the current time (turn) for the schedule
-		public int GetTime() {
-			return Time;
-		}
-
 		// Reset the time and clear out the schedule
 		public void Clear() {
 			Time = 0;
-			_scheduleables.Clear();
+			SCHEDULEABLES.Clear();
 		}
 	}
 }

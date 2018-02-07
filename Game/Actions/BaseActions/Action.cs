@@ -21,17 +21,17 @@ namespace RLGame.Actions.BaseActions
 		}
 
 		protected ICell GetCell( int x, int y ) {
-			DungeonMap map = Game.CurrentMap;
+			DungeonMap map = Game.GameController.CurrentMap;
 			return map.GetCell( x, y );
 		}
 
 		protected Actor GetActorAt(int x, int y) {
-			DungeonMap map = Game.CurrentMap;
+			DungeonMap map = Game.GameController.CurrentMap;
 			return map.GetActorAt( x, y );
 		}
 
 		protected Actor GetActorAt(ICell cell ) {
-			DungeonMap map = Game.CurrentMap;
+			DungeonMap map = Game.GameController.CurrentMap;
 			return map.GetActorAt( cell.X, cell.Y );
 		}
 

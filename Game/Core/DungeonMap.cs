@@ -24,7 +24,7 @@ namespace RLGame.Core
 		}
 
 		public void PreLevelChange() {
-			Player player = Game.Player;
+			Player player = Game.GameController.Player;
 			SetIsWalkable( player.X, player.Y, true );
 
 			foreach ( Monster monster in _monsters )
@@ -35,7 +35,7 @@ namespace RLGame.Core
 		}
 
 		public void PostLevelChange( bool down ) {
-			Player player = Game.Player;
+			Player player = Game.GameController.Player;
 			Game.SchedulingSystem.Clear();
 			Game.SchedulingSystem.Add( Game.SchedulingSystem.update );
 			if ( down )
@@ -57,7 +57,7 @@ namespace RLGame.Core
 		}
 
 		public void AddPlayer( Player player ) {
-			Game.Player = player;
+			Game.GameController.Player = player;
 			SetIsWalkable( player.X, player.Y, false );
 			UpdatePlayerFieldOfView();
 			if ( !Game.SchedulingSystem.Contains( player ) )
@@ -88,7 +88,7 @@ namespace RLGame.Core
 					return monster;
 				}
 			}
-			Player player = Game.Player;
+			Player player = Game.GameController.Player;
 			if ( player.X == x && player.Y == y )
 			{
 				return player;
@@ -115,12 +115,12 @@ namespace RLGame.Core
 		}
 
 		public bool CanMoveDownToNextLevel() {
-			Player player = Game.Player;
+			Player player = Game.GameController.Player;
 			return StairsDown.X == player.X && StairsDown.Y == player.Y;
 		}
 
 		public bool CanMoveUpToPreviousLevel() {
-			Player player = Game.Player;
+			Player player = Game.GameController.Player;
 			return StairsUp.X == player.X && StairsUp.Y == player.Y && MapLevel > 1;
 		}
 
@@ -164,7 +164,7 @@ namespace RLGame.Core
 		}
 
 		public void UpdatePlayerFieldOfView() {
-			Player player = Game.Player;
+			Player player = Game.GameController.Player;
 			ComputeFov( player.X, player.Y, player.Awareness, true );
 			foreach ( Cell cell in GetAllCells() )
 			{

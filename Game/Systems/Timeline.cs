@@ -11,14 +11,15 @@ namespace RLGame.Systems
 {
 	public class Timeline
 	{
-		private readonly SortedDictionary<int, List<IScheduleable>> _scheduleables;
+		private readonly SortedDictionary<int, List<IScheduleable>> SCHEDULEABLES;
 		private int timeLineLength = 60;
 		private List<Actor> _visibleActors;
 
 		public List<Actor> VisibleActors {
 			get {
-				if ( !_visibleActors.Contains( Game.Player ) )
-					_visibleActors.Add( Game.Player );
+				Player player = Game.GameController.Player;
+				if ( !_visibleActors.Contains( player ) )
+					_visibleActors.Add( player );
 
 				return _visibleActors;
 			}
@@ -27,12 +28,12 @@ namespace RLGame.Systems
 
 
 		public Timeline() {
-			_scheduleables = new SortedDictionary<int, List<IScheduleable>>();
+			SCHEDULEABLES = new SortedDictionary<int, List<IScheduleable>>();
 			_visibleActors = new List<Actor>();
 		}
 
 		public void Clear() {
-			_scheduleables.Clear();
+			SCHEDULEABLES.Clear();
 			VisibleActors.Clear();
 		}
 
@@ -41,12 +42,12 @@ namespace RLGame.Systems
 			int currentTime = Game.SchedulingSystem.Time;
 
 
-			while ( _scheduleables.Any() )
+			while ( SCHEDULEABLES.Any() )
 			{
-				var oldest = _scheduleables.First();
+				var oldest = SCHEDULEABLES.First();
 				if ( ( currentTime - oldest.Key ) > timeLineLength )
 				{
-					_scheduleables.Remove( oldest.Key );
+					SCHEDULEABLES.Remove( oldest.Key );
 				}
 				else
 					break;
@@ -62,22 +63,22 @@ namespace RLGame.Systems
 				{
 					if ( VisibleActors.Contains( scheduleable as Actor ) )
 					{
-						if ( !_scheduleables.ContainsKey( time ) )
+						if ( !SCHEDULEABLES.ContainsKey( time ) )
 						{
-							_scheduleables.Add( time, new List<IScheduleable>() );
+							SCHEDULEABLES.Add( time, new List<IScheduleable>() );
 						}
-						_scheduleables[time].Add( scheduleable );
+						SCHEDULEABLES[time].Add( scheduleable );
 						//Remove too old lists
 						Cull();
 					} 
 				}
 				else
 				{
-					if ( !_scheduleables.ContainsKey( time ) )
+					if ( !SCHEDULEABLES.ContainsKey( time ) )
 					{
-						_scheduleables.Add( time, new List<IScheduleable>() );
+						SCHEDULEABLES.Add( time, new List<IScheduleable>() );
 					}
-					_scheduleables[time].Add( scheduleable );
+					SCHEDULEABLES[time].Add( scheduleable );
 				}
 			}
 		}
@@ -88,7 +89,7 @@ namespace RLGame.Systems
 			  = new KeyValuePair<int, List<IScheduleable>>( -1, null );
 			List<int> emptyKeys = new List<int>();
 
-			foreach ( var scheduleablesList in _scheduleables )
+			foreach ( var scheduleablesList in SCHEDULEABLES )
 			{
 				//Search for a match
 				if ( scheduleablesList.Value.Contains( scheduleable ) )
@@ -112,7 +113,7 @@ namespace RLGame.Systems
 			//Remove empty lists
 			foreach ( int key in emptyKeys )
 			{
-				_scheduleables.Remove( key );
+				SCHEDULEABLES.Remove( key );
 
 			}
 
@@ -131,7 +132,7 @@ namespace RLGame.Systems
 
 		private void DrawEvents( RLConsole console, int topPadding, int leftPadding, int currentTime ) {
 			//Begin with the newest entry
-			foreach ( var scheduleables in _scheduleables.Reverse() )
+			foreach ( var scheduleables in SCHEDULEABLES.Reverse() )
 			{
 				//Skip the first entry(ongoing turn)
 				//if ( scheduleables.Key != currentTime )
@@ -157,7 +158,7 @@ namespace RLGame.Systems
 		private void DrawActors( RLConsole console, int topPadding, int leftPadding, int currentTime ) {
 			bool mostRecent = true;
 			//Begin with the newest entry
-			foreach ( var scheduleables in _scheduleables.Reverse() )
+			foreach ( var scheduleables in SCHEDULEABLES.Reverse() )
 			{
 				//Skip the first entry(ongoing turn)
 				if ( scheduleables.Key != currentTime )

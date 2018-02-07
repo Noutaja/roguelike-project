@@ -15,8 +15,8 @@ namespace RLGame.Behaviors
 	public class StandardMoveAndAttack : IBehavior
 	{
 		public bool Act( Monster monster ) {
-			DungeonMap dungeonMap = Game.CurrentMap;
-			Player player = Game.Player;
+			DungeonMap dungeonMap = Game.GameController.CurrentMap;
+			Player player = Game.GameController.Player;
 			FieldOfView monsterFov = new FieldOfView( dungeonMap );
 
 			// If the monster has not been alerted, compute a field-of-view 

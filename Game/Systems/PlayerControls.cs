@@ -19,27 +19,18 @@ namespace RLGame.Systems
 		private readonly RLRootConsole _rootConsole;
 		private List<RLKey> pressedKeys;
 		private RLKey lastMovementKey = RLKey.Unknown;
-		public CommandSystem CommandSystem = Game.CommandSystem;
-		private Player player = Game.Player;
+		public GameController GameController = Game.GameController;
+		private Player player = Game.GameController.Player;
 		private DungeonMap map;
-
-		private List<RLKey> movementKeys = new List<RLKey>() {  RLKey.Keypad1,
-																RLKey.Keypad2,
-																RLKey.Keypad3,
-																RLKey.Keypad4,
-																RLKey.Keypad6,
-																RLKey.Keypad7,
-																RLKey.Keypad8,
-																RLKey.Keypad9
-		};
+		private bool debug = true;
 
 		public PlayerControls( RLRootConsole rootConsole ) {
 			_rootConsole = rootConsole;
 			pressedKeys = new List<RLKey>();
 		}
-
+		
 		public bool CheckInput( RLKeyPress keyPress ) {
-			map = Game.CurrentMap;
+			map = GameController.CurrentMap;
 			bool didPlayerAct = false;
 			//check if pressedKeys is still up to date
 			for ( int i = 0; i < pressedKeys.Count; i++ )
@@ -52,56 +43,55 @@ namespace RLGame.Systems
 				}
 			}
 			if ( !pressedKeys.Contains( keyPress.Key ) ) { pressedKeys.Add( keyPress.Key ); }
-			
-			if ( pressedKeys.Any( x => movementKeys.Contains( x ) ) && pressedKeys.Contains( RLKey.Z ) )
-			{
-				ICellAction action = (ICellAction) player.Actions.Find( x => x.Name == "Punch" );
-				didPlayerAct = action.Execute( map.GetAdjacentCell( player.X, player.Y, CheckDirection( keyPress ) ) );
-			}
-			else if ( movementKeys.Contains( keyPress.Key ) )
-			{
-				didPlayerAct = CheckMovement( keyPress );
-			}
-			else if ( pressedKeys.Contains( RLKey.Keypad5 ) )
+
+			if ( debug ) { didPlayerAct = DebugKeys(); }
+
+			//What is pressed
+			if ( IsPressed( RLKey.Keypad5 ) )
 			{
 				ISelfAction action = (ISelfAction) player.Actions.Find( x => x.Name == "Wait" );
 				didPlayerAct = action.Execute();
 			}
-			else if ( pressedKeys.Contains( RLKey.Escape ) )
+			else if ( IsPressed( RLKey.Escape ) )
 			{
 				_rootConsole.Close();
 			}
-			else if ( pressedKeys.Contains( RLKey.Period ) )
+			else if ( IsPressed( RLKey.Period ) )
 			{
-				if ( Game.CurrentMap.CanMoveDownToNextLevel() )
+
+				if ( GameController.CurrentMap.CanMoveDownToNextLevel() )
 				{
-					Game.ChangeLevel( true );
+					GameController.ChangeLevel( true );
+					didPlayerAct = false;
 				}
-				else if ( Game.CurrentMap.CanMoveUpToPreviousLevel() )
+				else if ( GameController.CurrentMap.CanMoveUpToPreviousLevel() )
 				{
-					Game.ChangeLevel( false );
+					GameController.ChangeLevel( false );
+					didPlayerAct = false;
 				}
 			}
-			else if ( pressedKeys.Contains( RLKey.C ) )
+			else if ( MovementPressed() && IsPressed( RLKey.Z ) )
 			{
-				Game.ChangeLevel( true );
+				ICellAction action = (ICellAction) player.Actions.Find( x => x.Name == "Punch" );
+				didPlayerAct = action.Execute( map.GetAdjacentCell( player.X, player.Y, CheckDirection( keyPress ) ) );
 			}
-			else if ( pressedKeys.Contains( RLKey.E ) )
+			else if ( MovementPressed() )
 			{
-				Game.CurrentMap.RevealMap();
+				didPlayerAct = CheckMovement( keyPress );
 			}
+
 
 			if ( didPlayerAct )
 			{
 				//Add the player back into scheduling system, after taking an action(and getting a new speed)
 				Game.SchedulingSystem.Add( player );
-				CommandSystem.EndPlayerTurn();
+				GameController.EndPlayerTurn();
 			}
 			return didPlayerAct;
 		}
 
 		private Direction CheckDirection( RLKeyPress keyPress ) {
-			if ( movementKeys.Contains( keyPress.Key ) )
+			if ( MovementPressed() )
 			{
 				lastMovementKey = keyPress.Key;
 			}
@@ -136,7 +126,65 @@ namespace RLGame.Systems
 		private bool CheckMovement( RLKeyPress keyPress ) {
 			ICellAction action = (ICellAction) player.Actions.Find( x => x.Name == "Walk" );
 			Direction direction = CheckDirection( keyPress );
-			return action.Execute( map.GetAdjacentCell( player.X, player.Y, direction ) );
+			ICell cell = map.GetAdjacentCell( player.X, player.Y, direction );
+			bool succ = action.Execute( cell );
+			if ( succ )
+			{
+				if ( GameController.CurrentMap.CanMoveDownToNextLevel() )
+				{
+					GameController.ChangeLevel( true );
+					succ = false;
+				}
+				else if ( GameController.CurrentMap.CanMoveUpToPreviousLevel() )
+				{
+					GameController.ChangeLevel( false );
+					succ = false;
+				}
+			}
+			return succ;
+		}
+
+		private bool IsPressed(RLKey key ) {
+			return pressedKeys.Contains( key );
+		}
+
+		private bool MovementPressed() {
+			List<RLKey> movementKeys = new List<RLKey>() {  RLKey.Keypad1, RLKey.Keypad2, RLKey.Keypad3,
+															RLKey.Keypad4, RLKey.Keypad6, RLKey.Keypad7,
+															RLKey.Keypad8, RLKey.Keypad9
+		};
+			return pressedKeys.Any( x => movementKeys.Contains( x ) );
+		}
+
+		//!DEBUG!
+		private bool DebugKeys() {
+			if ( IsPressed( RLKey.S ) )
+			{
+				Console.WriteLine( "--------------------------" );
+				int i = 0;
+				foreach ( var a in Game.SchedulingSystem.SCHEDULEABLES )
+				{
+					foreach ( IScheduleable b in a.Value )
+					{
+						i++;
+						Console.WriteLine( $"{a.Key}: {b.GetType().ToString()}" );
+					}
+				}
+				Console.WriteLine( "--------------------------" );
+				Console.WriteLine( $"Scheduling entities: {i - 1}" );
+				Console.WriteLine( $"Map entities: {GameController.CurrentMap._monsters.Count}" );
+				Console.WriteLine();
+			}
+			else if ( IsPressed( RLKey.C ) )
+			{
+				GameController.ChangeLevel( true );
+				return false;
+			}
+			else if ( IsPressed( RLKey.E ) )
+			{
+				GameController.CurrentMap.RevealMap();
+			}
+			return false;
 		}
 	}
 }

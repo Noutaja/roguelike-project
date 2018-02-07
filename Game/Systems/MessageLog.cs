@@ -9,24 +9,28 @@ namespace RLGame.Systems
 {
 	public class MessageLog
 	{
-		private static readonly int _maxLines = 9;
-		private readonly Queue<string> _lines;
+		private static readonly int MAXLINES = 9;
+		private readonly Queue<string> LINES;
 
 		public MessageLog() {
-			_lines = new Queue<string>();
+			LINES = new Queue<string>();
+		}
+
+		public void Clear() {
+			LINES.Clear();
 		}
 
 		public void Add(string message ) {
-			_lines.Enqueue( message );
+			LINES.Enqueue( message );
 			
-			if(_lines.Count > _maxLines )
+			if(LINES.Count > MAXLINES )
 			{
-				_lines.Dequeue();
+				LINES.Dequeue();
 			}
 		}
 
 		public void Draw(RLConsole console ) {
-			string[] lines = _lines.ToArray();
+			string[] lines = LINES.ToArray();
 			for ( int i = 0; i < lines.Length; i++ )
 			{
 				console.Print( 1, i + 1, lines[i], RLColor.White );
