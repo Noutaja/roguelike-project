@@ -79,9 +79,8 @@ namespace RLGame.Systems
 			CreateHallways();
 			_map.islands = _islands;
 			CreateStairs();
-
-			PlacePlayer();
-			PlaceMonsters();
+			
+			GenerateMonsters();
 
 			return _map;
 		}
@@ -331,7 +330,7 @@ namespace RLGame.Systems
 			_map.AddPlayer( player );
 		}
 
-		private void PlaceMonsters() {
+		private void GenerateMonsters() {
 			foreach ( var room in _map.Rooms )
 			{
 				// Each room has a 60% chance of having monsters
@@ -351,7 +350,7 @@ namespace RLGame.Systems
 							var monster = new Shade( 1 );
 							monster.X = randomRoomLocation.X;
 							monster.Y = randomRoomLocation.Y;
-							_map.AddMonster( monster );
+							_map.AddMonster( monster, false );
 						}
 					}
 				}
@@ -370,10 +369,9 @@ namespace RLGame.Systems
 					var monster = new Shade( 1 );
 					monster.X = randomRoomLocation.X;
 					monster.Y = randomRoomLocation.Y;
-					_map.AddMonster( monster );
+					_map.AddMonster( monster, false );
 				}
 			}
 		}
-
 	}
 }

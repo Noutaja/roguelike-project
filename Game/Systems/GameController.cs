@@ -8,11 +8,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace RLGame.Systems
 {
 	public class GameController
 	{
+		private Thread mapLoader;
+		private object mapsLock = new object();
 		public List<DungeonMap> Maps { get; private set; }
 		public DungeonMap CurrentMap { get; private set; }
 		private readonly int MAXMAPWIDTH;
@@ -37,6 +40,10 @@ namespace RLGame.Systems
 			CurrentMap = mapGenerator.CreateMap();
 			CurrentMap.UpdatePlayerFieldOfView();
 			Maps.Add( CurrentMap );
+			CurrentMap.PostLevelChange( true );
+
+			mapLoader = new Thread( PreloadNextLevel );
+			mapLoader.Start( CurrentMap.MapLevel + 1 );
 		}
 		public void EndPlayerTurn() {
 			IsPlayerTurn = false;
@@ -78,26 +85,32 @@ namespace RLGame.Systems
 			else
 				newLevel--;
 			CurrentMap.PreLevelChange();
-
-			if ( Maps.Count < newLevel )
-			{
-				MapGenerator mapGenerator = new MapGenerator( MAXMAPWIDTH, MAXMAPHEIGHT, 50, 8, 4, newLevel, down );
-				CurrentMap = mapGenerator.CreateMap();
-				Game.MessageLog.Clear();
-				Game.MessageLog.Add( $"Entering level {CurrentMap.MapLevel}" );
-				Game.Timeline.Clear();
-				Maps.Add( CurrentMap );
-				IsPlayerTurn = false;
-			}
-			else
-			{
+			mapLoader.Join();
+			lock ( mapsLock )
 				CurrentMap = Maps[newLevel - 1];
-				CurrentMap.PostLevelChange( down );
-				Game.MessageLog.Clear();
-				Game.MessageLog.Add( $"Entering level {CurrentMap.MapLevel}" );
-				Game.Timeline.Clear();
-				IsPlayerTurn = false;
+
+			CurrentMap.PostLevelChange( down );
+			Game.MessageLog.Clear();
+			Game.MessageLog.Add( $"Entering level {CurrentMap.MapLevel}" );
+			Game.Timeline.Clear();
+			IsPlayerTurn = false;
+
+			bool lastGenerated;
+			lock ( mapsLock )
+				lastGenerated = CurrentMap.MapLevel == Maps.Count;
+			if ( lastGenerated )
+			{
+				mapLoader = new Thread( PreloadNextLevel );
+				mapLoader.Start( CurrentMap.MapLevel + 1 );
 			}
+		}
+
+		private void PreloadNextLevel( Object newLevel ) {
+			int tmp = (int) newLevel;
+			MapGenerator mapGenerator = new MapGenerator( MAXMAPWIDTH, MAXMAPHEIGHT, 50, 8, 4, tmp, true );
+			DungeonMap newMap = mapGenerator.CreateMap();
+			lock ( mapsLock )
+				Maps.Add( newMap );
 		}
 	}
 }

@@ -16,11 +16,17 @@ namespace RLGame.Core
 		public Stairs StairsUp { get; set; }
 		public Stairs StairsDown { get; set; }
 
+		public int visits;
+
 		public DungeonMap() {
-			Game.SchedulingSystem.Clear();
-			Game.SchedulingSystem.Add( Game.SchedulingSystem.update );
 			Rooms = new List<Rectangle>();
 			_monsters = new List<Monster>();
+			visits = 0;
+		}
+		public void Initialize() {
+			Game.SchedulingSystem.Clear();
+			Game.SchedulingSystem.Add( Game.SchedulingSystem.update );
+			visits++;
 		}
 
 		public void PreLevelChange() {
@@ -36,8 +42,7 @@ namespace RLGame.Core
 
 		public void PostLevelChange( bool down ) {
 			Player player = Game.GameController.Player;
-			Game.SchedulingSystem.Clear();
-			Game.SchedulingSystem.Add( Game.SchedulingSystem.update );
+			Initialize();
 			if ( down )
 			{
 				player.X = StairsUp.X;
@@ -52,7 +57,7 @@ namespace RLGame.Core
 			}
 			foreach ( Monster monster in _monsters )
 			{
-				AddMonster( monster );
+				AddMonster( monster, true );
 			}
 		}
 
@@ -64,12 +69,14 @@ namespace RLGame.Core
 				Game.SchedulingSystem.Add( player );
 		}
 
-		public void AddMonster( Monster monster ) {
+		public void AddMonster( Monster monster, bool setActive ) {
 			if ( !_monsters.Contains( monster ) )
 				_monsters.Add( monster );
-			SetIsWalkable( monster.X, monster.Y, false );
-			Game.SchedulingSystem.Add( monster );
-
+			if ( setActive )
+			{
+				SetIsWalkable( monster.X, monster.Y, false );
+				Game.SchedulingSystem.Add( monster );
+			}
 		}
 
 		public void RemoveMonster( Monster monster ) {
@@ -159,7 +166,7 @@ namespace RLGame.Core
 		}
 
 		public void SetIsWalkable( int x, int y, bool isWalkable ) {
-			ICell cell = GetCell( x, y ); //!!!!!!!!!!!!!!ICell!!!!!!!!!!!!!!!!!
+			ICell cell = GetCell( x, y );
 			SetCellProperties( cell.X, cell.Y, cell.IsTransparent, isWalkable, cell.IsExplored );
 		}
 
