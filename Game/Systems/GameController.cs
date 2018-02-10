@@ -32,13 +32,13 @@ namespace RLGame.Systems
 			MAXMAPWIDTH = maxMapWidth;
 			MAXMAPHEIGHT = maxMapHeight;
 
-			Player = new Player();
+			Player = new Player() { X = -1, Y = -1};
 		}
 
 		public void Initialize() {
 			MapGenerator mapGenerator = new MapGenerator( MAXMAPWIDTH, MAXMAPHEIGHT, 50, 8, 4, 1, true );
 			CurrentMap = mapGenerator.CreateMap();
-			CurrentMap.UpdatePlayerFieldOfView();
+			//CurrentMap.UpdatePlayerFieldOfView();
 			Maps.Add( CurrentMap );
 			CurrentMap.PostLevelChange( true );
 

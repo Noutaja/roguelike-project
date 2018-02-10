@@ -1,4 +1,5 @@
 ﻿using RLGame.Behaviors;
+using RLGame.Interfaces;
 using RLGame.Systems;
 using RLNET;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace RLGame.Core
 {
-	public class Monster : Actor
+	abstract public class Monster : Actor
 	{
 		public int? TurnsAlerted { get; set; }
 		public bool IsVisible { get; set; }
@@ -17,8 +18,14 @@ namespace RLGame.Core
 		protected int SimpleHealth { get; set; }
 		protected int SimpleMaxHealth { get; set; }
 
+		protected List<IBehavior> Behaviors { get; set; }
+
+		public Monster() {
+			Behaviors = new List<IBehavior>();
+		}
+
 		public virtual void Activate() {
-			var behavior = new StandardMoveAndAttack();
+			var behavior = Behaviors.FirstOrDefault();
 			behavior.Act( this );
 		}
 
@@ -32,7 +39,7 @@ namespace RLGame.Core
 			statConsole.Print( 1, yPosition, Symbol.ToString(), Color );
 
 			// Figure out the width of the health bar by dividing current health by max health
-			int width = Convert.ToInt32( ( (double) SimpleHealth / (double) SimpleMaxHealth ) * 16.0 );
+			int width = Convert.ToInt32( ( (double)SimpleHealth / (double)SimpleMaxHealth ) * 16.0 );
 			int remainingWidth = 16 - width;
 
 			// Set the background colors of the health bar to show how damaged the monster is

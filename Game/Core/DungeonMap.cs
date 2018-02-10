@@ -10,30 +10,26 @@ namespace RLGame.Core
 		public int MapLevel { get; set; }
 
 		public List<Rectangle> Rooms;
-		public List<Monster> _monsters;
+		public List<Monster> Monsters { get; private set; }
 		public List<List<Rectangle>> islands;
 
 		public Stairs StairsUp { get; set; }
 		public Stairs StairsDown { get; set; }
 
-		public int visits;
-
 		public DungeonMap() {
 			Rooms = new List<Rectangle>();
-			_monsters = new List<Monster>();
-			visits = 0;
+			Monsters = new List<Monster>();
 		}
 		public void Initialize() {
 			Game.SchedulingSystem.Clear();
 			Game.SchedulingSystem.Add( Game.SchedulingSystem.update );
-			visits++;
 		}
 
 		public void PreLevelChange() {
 			Player player = Game.GameController.Player;
 			SetIsWalkable( player.X, player.Y, true );
 
-			foreach ( Monster monster in _monsters )
+			foreach ( Monster monster in Monsters )
 			{
 				SetIsWalkable( monster.X, monster.Y, true );
 			}
@@ -55,10 +51,11 @@ namespace RLGame.Core
 				player.Y = StairsDown.Y;
 				AddPlayer( player );
 			}
-			foreach ( Monster monster in _monsters )
+			foreach ( Monster monster in Monsters )
 			{
 				AddMonster( monster, true );
 			}
+			UpdatePlayerFieldOfView();
 		}
 
 		public void AddPlayer( Player player ) {
@@ -70,8 +67,8 @@ namespace RLGame.Core
 		}
 
 		public void AddMonster( Monster monster, bool setActive ) {
-			if ( !_monsters.Contains( monster ) )
-				_monsters.Add( monster );
+			if ( !Monsters.Contains( monster ) )
+				Monsters.Add( monster );
 			if ( setActive )
 			{
 				SetIsWalkable( monster.X, monster.Y, false );
@@ -80,7 +77,7 @@ namespace RLGame.Core
 		}
 
 		public void RemoveMonster( Monster monster ) {
-			_monsters.Remove( monster );
+			Monsters.Remove( monster );
 			SetIsWalkable( monster.X, monster.Y, true );
 			Game.SchedulingSystem.Remove( monster, true );
 			Game.SchedulingSystem.update.UpdateEvent -= monster.OnUpdateEvent;
@@ -88,7 +85,7 @@ namespace RLGame.Core
 		}
 
 		public Actor GetActorAt( int x, int y ) {
-			foreach ( Monster monster in _monsters )
+			foreach ( Monster monster in Monsters )
 			{
 				if ( monster.X == x && monster.Y == y )
 				{
@@ -194,14 +191,14 @@ namespace RLGame.Core
 			StairsDown.Draw( mapConsole, this );
 
 			//Draw monsters
-			foreach ( Monster monster in _monsters )
+			foreach ( Monster monster in Monsters )
 			{
 				monster.Draw( mapConsole, this );
 				monster.UpdateTimeline( Game.Timeline, this );
 			}
 
 			int i = 0;
-			foreach ( Monster monster in _monsters )
+			foreach ( Monster monster in Monsters )
 			{
 				// When the monster is in the field-of-view also draw their stats
 				if ( IsInFov( monster.X, monster.Y ) )

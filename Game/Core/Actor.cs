@@ -18,6 +18,9 @@ namespace RLGame.Core
 			
 			Update = Game.SchedulingSystem.update;
 			Update.UpdateEvent += OnUpdateEvent;
+
+			_bodyparts = new List<Bodypart>();
+			Actions = new List<Action>();
 		}
 		//IActor
 		private int _awareness;
@@ -49,12 +52,12 @@ namespace RLGame.Core
 
 		public int Strength {
 			get {
-				Arm a = (Arm) GetBodypart( "Arm" );
+				Arm a = (Arm) GetBodypart( BodypartType.Arm );
 				if(a != null )
 				{
 					return a.Strength;
 				}
-				Head h = (Head) GetBodypart( "Head" );
+				Head h = (Head) GetBodypart( BodypartType.Head );
 				return h.Strength;
 			}
 		}
@@ -139,6 +142,10 @@ namespace RLGame.Core
 				}
 			}
 			return false;
+		}
+
+		public Bodypart GetBodypart( BodypartType type) {
+			return Bodyparts.Find( bodypart => bodypart.partType == type );
 		}
 
 		public Bodypart GetBodypart( string bodypartName ) {

@@ -72,6 +72,8 @@
     <Compile Include="Actions\BaseActions\Action.cs" />
     <Compile Include="Actions\BaseActions\AttackAction.cs" />
     <Compile Include="Actions\Bite.cs" />
+    <Compile Include="Behaviors\BaseBehaviors\Behavior.cs" />
+    <Compile Include="Behaviors\HuntPlayer.cs" />
     <Compile Include="Core\ActionTag.cs" />
     <Compile Include="Core\Attack.cs" />
     <Compile Include="Core\TimelineEvent.cs" />
@@ -136,5 +138,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

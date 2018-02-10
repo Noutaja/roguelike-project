@@ -172,7 +172,7 @@ namespace RLGame.Systems
 				}
 				Console.WriteLine( "--------------------------" );
 				Console.WriteLine( $"Scheduling entities: {i - 1}" );
-				Console.WriteLine( $"Map entities: {GameController.CurrentMap._monsters.Count}" );
+				Console.WriteLine( $"Map entities: {GameController.CurrentMap.Monsters.Count}" );
 				Console.WriteLine();
 			}
 			else if ( IsPressed( RLKey.C ) )

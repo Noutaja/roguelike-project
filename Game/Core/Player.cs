@@ -17,16 +17,14 @@ namespace RLGame.Core
 			int torsoHealth = 50;
 			int armHealth = 15;
 			int legHealth = 20;
-			Bodyparts = new List<Bodypart>{
-				new Torso(torsoHealth, true, 15),
-				new Head(headHealth, true, 4),
+			Bodyparts.Add( new Torso( torsoHealth, true, 15 ) );
+			Bodyparts.Add( new Head( headHealth, true, 4 ) );
 
-				new Arm(armHealth, false, 6, 10),
-				new Arm(armHealth, false, 6, 10),
+			Bodyparts.Add( new Arm( armHealth, false, 6, 10 ) { Name = "Left Arm" } );
+			Bodyparts.Add( new Arm( armHealth, false, 6, 10 ) { Name = "Right Arm" } );
 
-				new Leg(legHealth, false, 7),
-				new Leg(legHealth, false, 7)
-			};
+			Bodyparts.Add( new Leg( legHealth, false, 7 ) { Name = "Left Leg" } );
+			Bodyparts.Add( new Leg( legHealth, false, 7 ) { Name = "Right Leg" } );
 
 
 			Awareness = 15;
@@ -36,11 +34,9 @@ namespace RLGame.Core
 			Speed = 1;
 			Regen = 1;
 			Symbol = '@';
-			Actions = new List<Action> {
-				new Walk( this ),
-				new Wait( this ),
-				new Punch(this){damage = Strength}
-			};
+			Actions.Add( new Walk( this ) );
+			Actions.Add( new Wait( this ) );
+			Actions.Add( new Punch( this ) { damage = Strength } );
 			LastAction = new Wait(this);
 		}
 

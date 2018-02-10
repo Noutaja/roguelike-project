@@ -1,4 +1,5 @@
 ﻿using RLGame.Actions.BaseActions;
+using RLGame.Behaviors.BaseBehaviors;
 using RLGame.Core;
 using RLGame.Interfaces;
 using RLGame.Interfaces.ActionTypes;
@@ -12,12 +13,9 @@ using System.Threading.Tasks;
 
 namespace RLGame.Behaviors
 {
-	public class StandardMoveAndAttack : IBehavior
+	public class StandardMoveAndAttack : Behavior, IBehavior
 	{
 		public bool Act( Monster monster ) {
-			DungeonMap dungeonMap = Game.GameController.CurrentMap;
-			Player player = Game.GameController.Player;
-			FieldOfView monsterFov = new FieldOfView( dungeonMap );
 
 			// If the monster has not been alerted, compute a field-of-view 
 			// Use the monster's Awareness value for the distance in the FoV check
