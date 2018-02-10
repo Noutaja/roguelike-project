@@ -14,11 +14,8 @@ namespace RLGame.Behaviors
 	public class HuntPlayer : Behavior, IBehavior
 	{
 		public bool Act( Monster monster ) {
-			//if ( dungeonMap == null || player == null || monsterFov == null )
-			{
-				Initialize();
-			}
-
+			Initialize();
+			
 			monsterFov.ComputeFov( monster.X, monster.Y, monster.Awareness, true );
 			if ( monsterFov.IsInFov( player.X, player.Y ) )
 			{

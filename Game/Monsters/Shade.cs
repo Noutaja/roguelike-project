@@ -19,8 +19,8 @@ namespace RLGame.Monsters
 			int torsoHealth = Dice.Roll( "2D5" );
 			int legHealth = Dice.Roll( "3D3-2" );
 			Bodyparts.Add( new Torso( torsoHealth, true, 5 ) );
-			Bodyparts.Add( new Head( headHealth, true, 1 ) { Strength = 5 } );
-			Bodyparts.Add( new Leg( legHealth, false, 2 ) );
+			Bodyparts.Add( new Head( headHealth, true, 2 ) { Strength = 5 } );
+			Bodyparts.Add( new Leg( legHealth, false, 1 ) );
 			Awareness = 10;
 			int health = CalculateSimpleHealth();
 			SimpleHealth = health;

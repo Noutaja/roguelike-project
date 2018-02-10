@@ -39,7 +39,7 @@ namespace RLGame.Core
 						_targets.Add( actor );
 					}
 				}
-				else { Console.WriteLine("CELL NULL!!!"); }
+				else { Console.WriteLine($"{_attacker}'s {_name}: CELL NULL!!!"); }
 			}
 			//Deal damage
 			if ( !_targets.Any() )

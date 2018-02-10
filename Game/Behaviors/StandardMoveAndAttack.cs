@@ -16,7 +16,7 @@ namespace RLGame.Behaviors
 	public class StandardMoveAndAttack : Behavior, IBehavior
 	{
 		public bool Act( Monster monster ) {
-
+			Initialize();
 			// If the monster has not been alerted, compute a field-of-view 
 			// Use the monster's Awareness value for the distance in the FoV check
 			// If the player is in the monster's FoV then alert it
@@ -33,30 +33,15 @@ namespace RLGame.Behaviors
 
 			if ( monster.TurnsAlerted.HasValue )
 			{
-				// Before we find a path, make sure to make the monster and player Cells walkable
-				dungeonMap.SetIsWalkable( monster.X, monster.Y, true );
-				dungeonMap.SetIsWalkable( player.X, player.Y, true );
-
-				PathFinder pathFinder = new PathFinder( dungeonMap, 1.41 );
-				Path path = null;
-
 				try
 				{
-					path = pathFinder.ShortestPath(
-						dungeonMap.GetCell( monster.X, monster.Y ),
-						dungeonMap.GetCell( player.X, player.Y ) );
+					path = GetPath( monster.X, monster.Y, player.X, player.Y );
 				}
 				catch ( PathNotFoundException )
 				{
-					// The monster can see the player, but cannot find a path to him
-					// This could be due to other monsters blocking the way
-					// Add a message to the message log that the monster is waiting
-					Game.MessageLog.Add( $"{monster.Name} waits for a turn" );
+					ISelfAction action = (ISelfAction) monster.Actions.Find( x => x.Tags.Any( y => y == ActionTag.Pass ) );
+					action.Execute();
 				}
-
-				// Don't forget to set the walkable status back to false
-				dungeonMap.SetIsWalkable( monster.X, monster.Y, false );
-				dungeonMap.SetIsWalkable( player.X, player.Y, false );
 
 				// In the case that there was a path, tell the monster to move
 				if ( path != null )

@@ -76,6 +76,7 @@
     <Compile Include="Behaviors\HuntPlayer.cs" />
     <Compile Include="Core\ActionTag.cs" />
     <Compile Include="Core\Attack.cs" />
+    <Compile Include="Core\PlayerControlState.cs" />
     <Compile Include="Core\TimelineEvent.cs" />
     <Compile Include="Interfaces\ActionTypes\ICellAction.cs" />
     <Compile Include="Interfaces\ActionTypes\ISelfAction.cs" />
