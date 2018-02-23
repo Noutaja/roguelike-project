@@ -45,7 +45,7 @@ namespace RLGame.Monsters
 			Actions = new List<Action> {
 				new Walk( this ),
 				new Wait( this ),
-				new Punch( this ){damage = 5}
+				new Punch( this ){Damage = 5}
 			};
 		}
 	}

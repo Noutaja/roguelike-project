@@ -36,8 +36,9 @@ namespace RLGame.Core
 			Symbol = '@';
 			Actions.Add( new Walk( this ) );
 			Actions.Add( new Wait( this ) );
-			Actions.Add( new Punch( this ) { damage = Strength } );
-			LastAction = new Wait(this);
+			Actions.Add( new Punch( this ) { Damage = Strength } );
+			Actions.Add( new Slash( this ) { Damage = Strength * 2 } );
+			LastAction = new Wait( this );
 		}
 
 		override public void OnUpdateEvent( object sender, EventArgs e ) {
@@ -76,10 +77,10 @@ namespace RLGame.Core
 				int remainingWidth = 16 - width;
 
 				// Set the background colors of the health bar to show how damaged the monster is
-				if (bodypart.IsVital)
+				if ( bodypart.IsVital )
 				{
 					statConsole.SetBackColor( 2, yPosition, width, 1, Swatch.PrimaryLighter );
-				} 
+				}
 				else
 				{
 					statConsole.SetBackColor( 2, yPosition, width, 1, Swatch.Primary );
@@ -87,7 +88,7 @@ namespace RLGame.Core
 				statConsole.SetBackColor( 2 + width, yPosition, remainingWidth, 1, Swatch.PrimaryDarkest );
 
 				// Print the monsters name over top of the health bar
-				if (bodypart.IsVital)
+				if ( bodypart.IsVital )
 				{
 					statConsole.Print( 3, yPosition, $"{bodypart.Name} {bodypart.Health}", Colors.TextHeading );
 				}

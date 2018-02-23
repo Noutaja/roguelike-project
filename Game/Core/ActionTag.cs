@@ -8,6 +8,7 @@ namespace RLGame.Core
 {
 	public enum ActionTag
 	{
+		Attack,
 		Melee,
 		Movement,
 		Pass

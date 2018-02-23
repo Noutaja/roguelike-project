@@ -13,10 +13,9 @@ namespace RLGame.Core
 		Down = 2,
 		DownRight = 3,
 		Left = 4,
-		Center = 5,
-		Right = 6,
-		UpLeft = 7,
-		Up = 8,
-		UpRight = 9
+		Right = 5,
+		UpLeft = 6,
+		Up = 7,
+		UpRight = 8
 	}
 }

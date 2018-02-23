@@ -10,6 +10,7 @@ namespace RLGame.Core
 	{
 		Normal,
 		LightAttack,
+		MediumAttack,
 		Debug
 	}
 }

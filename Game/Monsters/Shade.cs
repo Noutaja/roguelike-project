@@ -33,7 +33,7 @@ namespace RLGame.Monsters
 			Regen = 0;
 			Actions.Add( new Walk( this ) );
 			Actions.Add( new Wait( this ) );
-			Actions.Add( new Bite( this ) { damage = Strength } );
+			Actions.Add( new Bite( this ) { Damage = Strength } );
 			LastAction = new Wait( this );
 			Behaviors.Add(new HuntPlayer());
 		}

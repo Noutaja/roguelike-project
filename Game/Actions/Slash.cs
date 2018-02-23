@@ -1,36 +1,38 @@
 ﻿using RLGame.Actions.BaseActions;
 using RLGame.Core;
 using RLGame.Interfaces.ActionTypes;
+using RLGame.Prototypes;
 using RogueSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RLGame.Prototypes;
 
 namespace RLGame.Actions
 {
-	public class Punch : AttackAction, ICellAction
+	class Slash : AttackAction, ICellAction
 	{
-		public Punch( Actor actor ) {
-			TimeMultiplier = 0.2;
+		public Slash( Actor actor ) {
+			TimeMultiplier = 0.3;
 			_attackSpeed = (int) ( actor.Initiative * ( TimeMultiplier / 2 ) );
+			_attackPattern = AttackPatterns.FrontHorizontal3();
 			Actor = actor;
-			Name = "Punch";
+			Name = "Slash";
 			Tags.Add( ActionTag.Melee );
 		}
+
 		public bool Execute( ICell cell ) {
+			throw new Exception( "This attack cannot be called with one parameter!" );
+		}
+
+		public bool Execute( ICell cell, Direction direction ) {
 			Attack attack = new Attack( Actor, Name, Damage, _attackSpeed );
-			attack.AddArea( cell );
+			OverlayAttackPattern( cell, direction, attack );
 			attack.AddHitmarker( _hitmarker );
 			ModifySpeed();
 			SetLastAction();
 			return true;
-		}
-
-		public bool Execute( ICell cell, Direction direction ) {
-			throw new NotImplementedException();
 		}
 	}
 }

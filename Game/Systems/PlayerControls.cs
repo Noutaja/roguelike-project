@@ -35,10 +35,11 @@ namespace RLGame.Systems
 							{
 								{ PlayerControlState.Debug, Debug },
 								{ PlayerControlState.Normal, Normal },
-								{ PlayerControlState.LightAttack, LightAttack }
+								{ PlayerControlState.LightAttack, LightAttack },
+								{ PlayerControlState.MediumAttack, MediumAttack }
 			};
 		}
-
+		
 		public bool CheckInput( RLKeyPress keyPress ) {
 			RLKey key = keyPress.Key;
 			map = GameController.CurrentMap;
@@ -70,14 +71,15 @@ namespace RLGame.Systems
 				//Add the player back into scheduling system, after taking an action(and getting a new speed)
 				Game.SchedulingSystem.Add( player );
 				GameController.EndPlayerTurn();
-				controlState = ResetState();
 			}
+			controlState = ResetState();
 			return didPlayerAct;
 		}
 		
 		private PlayerControlState ResetState() {
 			return PlayerControlState.Normal;
 		}
+
 		private bool LightAttack( RLKey key ) {
 			if ( IsPressed( RLKey.Keypad5 ) )
 			{
@@ -88,6 +90,20 @@ namespace RLGame.Systems
 			{
 				ICellAction action = (ICellAction) player.Actions.Find( x => x.Name == "Punch" );
 				return action.Execute( map.GetAdjacentCell( player.X, player.Y, lastDirection ) );
+			}
+			return false;
+		}
+
+		private bool MediumAttack( RLKey key ) {
+			if ( IsPressed( RLKey.Keypad5 ) )
+			{
+				ISelfAction action = (ISelfAction) player.Actions.Find( x => x.Name == "Wait" );
+				return action.Execute();
+			}
+			else if ( MovementPressed() )
+			{
+				ICellAction action = (ICellAction) player.Actions.Find( x => x.Name == "Slash" );
+				return action.Execute( map.GetCell( player.X, player.Y), lastDirection );
 			}
 			return false;
 		}
@@ -138,6 +154,10 @@ namespace RLGame.Systems
 		private PlayerControlState CheckForState() {
 			if ( IsPressed( RLKey.Z ) )
 				return PlayerControlState.LightAttack;
+
+			else if ( IsPressed( RLKey.X ) )
+				return PlayerControlState.MediumAttack;
+			
 
 			else if ( IsPressed( RLKey.F12 ) && debug )
 				return PlayerControlState.Debug;

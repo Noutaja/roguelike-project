@@ -11,5 +11,6 @@ namespace RLGame.Interfaces.ActionTypes
 	public interface ICellAction
 	{
 		bool Execute( ICell cell );
+		bool Execute( ICell cell, Direction direction );
 	}
 }

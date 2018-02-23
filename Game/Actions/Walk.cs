@@ -37,5 +37,9 @@ namespace RLGame.Actions
 			}
 				return false; 
 		}
+
+		public bool Execute( ICell cell, Direction direction ) {
+			return Execute( cell );
+		}
 	}
 }
