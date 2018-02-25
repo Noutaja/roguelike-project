@@ -1,7 +1,6 @@
 ﻿using RLGame.Actions.BaseActions;
 using RLGame.Core;
 using RLGame.Interfaces.ActionTypes;
-using RLGame.Prototypes;
 using RogueSharp;
 using System;
 using System.Collections.Generic;
@@ -16,7 +15,7 @@ namespace RLGame.Actions
 		public Slash( Actor actor ) {
 			TimeMultiplier = 0.3;
 			_attackSpeed = (int) ( actor.Initiative * ( TimeMultiplier / 2 ) );
-			_attackPattern = AttackPatterns.FrontHorizontal3();
+			_attackPattern = Prototypes.AttackPatterns.FrontHorizontal3();
 			Actor = actor;
 			Name = "Slash";
 			Tags.Add( ActionTag.Melee );

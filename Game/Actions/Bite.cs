@@ -15,6 +15,7 @@ namespace RLGame.Actions
 		public Bite( Actor actor ) {
 			TimeMultiplier = 0.2;
 			_attackSpeed = (int) ( actor.Initiative * ( TimeMultiplier / 2 ) );
+			_attackPattern = Prototypes.AttackPatterns.Basic();
 			Actor = actor;
 			Name = "Bite";
 			Tags.Add( ActionTag.Melee );
@@ -29,7 +30,12 @@ namespace RLGame.Actions
 		}
 
 		public bool Execute( ICell cell, Direction direction ) {
-			throw new NotImplementedException();
+			Attack attack = new Attack( Actor, Name, Damage, _attackSpeed );
+			OverlayAttackPattern( cell, direction, attack );
+			attack.AddHitmarker( _hitmarker );
+			ModifySpeed();
+			SetLastAction();
+			return true;
 		}
 	}
 }

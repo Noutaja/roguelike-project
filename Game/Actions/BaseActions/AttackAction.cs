@@ -29,8 +29,8 @@ namespace RLGame.Actions.BaseActions
 				{
 					if ( rotatedAttackPattern[y, x] )
 					{
-						int yOffset = ( y - center.Y ) * -1;
-						int xOffset = ( x - center.X ) * -1;
+						int yOffset = ( center.Y - y );
+						int xOffset = ( center.X - x );
 						attack.AddArea( GetCell( cell.X - xOffset, cell.Y - yOffset ) );
 					}
 				}

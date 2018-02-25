@@ -184,7 +184,7 @@ namespace RLGame.Systems
 
 								if ( mostRecent )
 								{
-									console.Print( xPosition, topPadding - 1 + i, timeDifference.ToString(), RLColor.White );
+									console.Print( xPosition, topPadding - 1, timeDifference.ToString(), RLColor.White );
 								}
 								//Add the key of only the most recent list above the timeline
 								if ( mostRecent )

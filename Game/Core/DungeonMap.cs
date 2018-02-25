@@ -212,6 +212,38 @@ namespace RLGame.Core
 			}
 		}
 
+		public Direction GetDirection( ICell origin, ICell target ) {
+			int xDifference = target.X - origin.X;
+			int yDifference = target.Y - origin.Y;
+
+			if ( xDifference < 0 && yDifference < 0 )
+				return Direction.UpLeft;
+
+			else if ( xDifference == 0 && yDifference < 0 )
+				return Direction.Up;
+
+			else if ( xDifference > 0 && yDifference < 0 )
+				return Direction.UpRight;
+
+			else if ( xDifference < 0 && yDifference == 0 )
+				return Direction.Left;
+
+			else if ( xDifference > 0 && yDifference == 0 )
+				return Direction.Right;
+
+			else if ( xDifference < 0 && yDifference > 0 )
+				return Direction.DownLeft;
+
+			else if ( xDifference == 0 && yDifference > 0 )
+				return Direction.Down;
+
+			else if ( xDifference > 0 && yDifference > 0 )
+				return Direction.DownRight;
+
+			else
+				return Direction.None;
+		}
+
 		public ICell GetAdjacentCell( int x, int y, Direction direction ) {
 			switch ( direction )
 			{

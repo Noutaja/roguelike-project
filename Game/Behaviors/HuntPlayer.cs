@@ -15,13 +15,13 @@ namespace RLGame.Behaviors
 	{
 		public bool Act( Monster monster ) {
 			Initialize();
-			
+
 			monsterFov.ComputeFov( monster.X, monster.Y, monster.Awareness, true );
 			if ( monsterFov.IsInFov( player.X, player.Y ) )
 			{
 				if ( path == null )
 				{
-					Game.MessageLog.Add( $"{monster.Name} is eager to fight {player.Name}" ); 
+					Game.MessageLog.Add( $"{monster.Name} is eager to fight {player.Name}" );
 				}
 				path = CreatePath( monster );
 			}
@@ -34,10 +34,11 @@ namespace RLGame.Behaviors
 			{
 				try
 				{
+					ICell currentCell = dungeonMap.GetCell( monster.X, monster.Y);
 					if ( path.Length == 2 )
 					{
 						ICellAction action = (ICellAction) monster.Actions.Find( x => x.Tags.Any( y => y == ActionTag.Melee ) );
-						action.Execute( path.StepForward() );
+						action.Execute( currentCell, dungeonMap.GetDirection( currentCell, path.StepForward() ) );
 					}
 					else
 					{
@@ -52,7 +53,7 @@ namespace RLGame.Behaviors
 				}
 			}
 			TurnsSincePF++;
-			if(TurnsSincePF > resetTime )
+			if ( TurnsSincePF > resetTime )
 			{
 				TurnsSincePF = null;
 			}
@@ -60,7 +61,7 @@ namespace RLGame.Behaviors
 			return true;
 		}
 
-		private Path CreatePath( Monster monster) {
+		private Path CreatePath( Monster monster ) {
 			Path path = null;
 			try
 			{
