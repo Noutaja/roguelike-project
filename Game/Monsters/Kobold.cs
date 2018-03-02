@@ -1,6 +1,6 @@
 ﻿using RLGame.Bodyparts;
 using RLGame.Core;
-using Action = RLGame.Actions.BaseActions.Action;
+using BaseAction = RLGame.Actions.BaseActions.BaseAction;
 using RogueSharp.DiceNotation;
 using System;
 using System.Collections.Generic;
@@ -42,10 +42,10 @@ namespace RLGame.Monsters
 			Regen = 0;
 			LastAction = new Wait( this );
 
-			Actions = new List<Action> {
+			Actions = new List<BaseAction> {
 				new Walk( this ),
 				new Wait( this ),
-				new Punch( this ){Damage = 5}
+				Prototypes.Attacks.Punch(this)
 			};
 		}
 	}

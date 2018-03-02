@@ -1,7 +1,7 @@
 ﻿using RLGame.Actions.BaseActions;
 using RLGame.Core;
 using RLGame.Interfaces.ActionTypes;
-using Action = RLGame.Actions.BaseActions.Action;
+using BaseAction = RLGame.Actions.BaseActions.BaseAction;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace RLGame.Actions
 {
-	public class Wait : Action, ISelfAction
+	public class Wait : BaseAction, ISelfAction
 	{
 		public Wait(Actor actor ) {
 			TimeMultiplier = 0.1;

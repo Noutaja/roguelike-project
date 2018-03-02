@@ -69,10 +69,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actions\BaseActions\Action.cs" />
-    <Compile Include="Actions\BaseActions\AttackAction.cs" />
-    <Compile Include="Actions\Bite.cs" />
-    <Compile Include="Actions\Slash.cs" />
+    <Compile Include="Actions\BaseActions\BaseAction.cs" />
+    <Compile Include="Actions\BaseActions\BaseAttack.cs" />
+    <Compile Include="Actions\AttackAction.cs" />
     <Compile Include="Behaviors\BaseBehaviors\Behavior.cs" />
     <Compile Include="Behaviors\HuntPlayer.cs" />
     <Compile Include="Core\ActionTag.cs" />
@@ -83,7 +82,6 @@
     <Compile Include="Interfaces\ActionTypes\ICellAction.cs" />
     <Compile Include="Interfaces\ActionTypes\ISelfAction.cs" />
     <Compile Include="Interfaces\ActionTypes\ITargetAction.cs" />
-    <Compile Include="Actions\Punch.cs" />
     <Compile Include="Actions\Wait.cs" />
     <Compile Include="Actions\Walk.cs" />
     <Compile Include="Behaviors\StandardMoveAndAttack.cs" />
@@ -113,6 +111,7 @@
     <Compile Include="Monsters\Shade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Prototypes\AttackPatterns.cs" />
+    <Compile Include="Prototypes\Attacks.cs" />
     <Compile Include="Systems\GameController.cs" />
     <Compile Include="Systems\MapGenerator.cs" />
     <Compile Include="Systems\MessageLog.cs" />

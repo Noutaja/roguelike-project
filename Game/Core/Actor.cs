@@ -1,6 +1,5 @@
 ﻿using RLGame.Interfaces;
 using RLGame.Systems;
-using Action = RLGame.Actions.BaseActions.Action;
 using RLNET;
 using RogueSharp;
 using System;
@@ -9,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RLGame.Bodyparts;
+using RLGame.Actions.BaseActions;
 
 namespace RLGame.Core
 {
@@ -20,7 +20,7 @@ namespace RLGame.Core
 			Update.UpdateEvent += OnUpdateEvent;
 
 			_bodyparts = new List<Bodypart>();
-			Actions = new List<Action>();
+			Actions = new List<BaseAction>();
 		}
 		//IActor
 		private int _awareness;
@@ -29,8 +29,8 @@ namespace RLGame.Core
 		private int _speed;
 		private double _regen;
 		private List<Bodypart> _bodyparts;
-		public Action LastAction { get; set; }
-		public List<Action> Actions { get; set; }
+		public BaseAction LastAction { get; set; }
+		public List<BaseAction> Actions { get; set; }
 
 		public List<Bodypart> Bodyparts {
 			get {

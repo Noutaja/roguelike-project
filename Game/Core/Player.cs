@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using RLGame.Actions;
 using RLGame.Bodyparts;
-using Action = RLGame.Actions.BaseActions.Action;
 using RLNET;
 
 namespace RLGame.Core
@@ -36,8 +35,8 @@ namespace RLGame.Core
 			Symbol = '@';
 			Actions.Add( new Walk( this ) );
 			Actions.Add( new Wait( this ) );
-			Actions.Add( new Punch( this ) { Damage = Strength } );
-			Actions.Add( new Slash( this ) { Damage = Strength * 2 } );
+			Actions.Add( Prototypes.Attacks.Punch(this) );
+			Actions.Add( Prototypes.Attacks.Slash(this) );
 			LastAction = new Wait( this );
 		}
 

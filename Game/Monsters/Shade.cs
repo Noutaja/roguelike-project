@@ -1,7 +1,7 @@
 ﻿using RLGame.Actions;
 using RLGame.Bodyparts;
 using RLGame.Core;
-using Action = RLGame.Actions.BaseActions.Action;
+using Action = RLGame.Actions.BaseActions.BaseAction;
 using RogueSharp.DiceNotation;
 using System;
 using System.Collections.Generic;
@@ -33,9 +33,9 @@ namespace RLGame.Monsters
 			Regen = 0;
 			Actions.Add( new Walk( this ) );
 			Actions.Add( new Wait( this ) );
-			Actions.Add( new Bite( this ) { Damage = Strength } );
+			Actions.Add( Prototypes.Attacks.Bite( this ) );
 			LastAction = new Wait( this );
-			Behaviors.Add(new HuntPlayer());
+			Behaviors.Add( new HuntPlayer() );
 		}
 	}
 }

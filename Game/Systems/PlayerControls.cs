@@ -89,7 +89,7 @@ namespace RLGame.Systems
 			else if ( MovementPressed() )
 			{
 				ICellAction action = (ICellAction) player.Actions.Find( x => x.Name == "Punch" );
-				return action.Execute( map.GetAdjacentCell( player.X, player.Y, lastDirection ) );
+				return action.Execute( map.GetCell( player.X, player.Y ), lastDirection );
 			}
 			return false;
 		}

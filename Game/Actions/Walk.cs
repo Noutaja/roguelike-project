@@ -2,7 +2,7 @@
 using RLGame.Core;
 using RLGame.Interfaces;
 using RogueSharp;
-using Action = RLGame.Actions.BaseActions.Action;
+using BaseAction = RLGame.Actions.BaseActions.BaseAction;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ using RLGame.Interfaces.ActionTypes;
 
 namespace RLGame.Actions
 {
-	public class Walk : Action, ICellAction
+	public class Walk : BaseAction, ICellAction
 	{
 
 		public Walk( Actor actor ) {

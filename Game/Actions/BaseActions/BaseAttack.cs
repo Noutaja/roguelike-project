@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 
 namespace RLGame.Actions.BaseActions
 {
-	abstract public class AttackAction : Action
+	public class BaseAttack : BaseAction
 	{
 		public int Damage;
-		protected int _attackSpeed;
-		protected TimelineEvent _hitmarker;
-		protected bool[,] _attackPattern;
+		public int AttackSpeed;
+		public TimelineEvent Hitmarker;
+		public bool[,] AttackPattern;
 
-		public AttackAction() {
-			_hitmarker = new TimelineEvent( Colors.Blood, '*' );
+		public BaseAttack() {
+			Hitmarker = new TimelineEvent( Colors.Blood, '*' );
 		}
 
 		protected void OverlayAttackPattern( ICell cell, Direction direction, Attack attack ) {
@@ -38,7 +38,7 @@ namespace RLGame.Actions.BaseActions
 		}
 
 		protected bool[,] Rotate(Direction direction) {
-			bool[,] rotatedPattern = _attackPattern;
+			bool[,] rotatedPattern = AttackPattern;
 			for ( int i = 0; i < TimesToRotate(direction); i++ )
 			{
 				rotatedPattern = ArrayExtensions.Rotate45( rotatedPattern );

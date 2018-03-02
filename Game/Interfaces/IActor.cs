@@ -1,5 +1,5 @@
 ﻿using RLGame.Core;
-using Action = RLGame.Actions.BaseActions.Action;
+using BaseAction = RLGame.Actions.BaseActions.BaseAction;
 using RLNET;
 using RogueSharp;
 using System;
@@ -19,9 +19,9 @@ namespace RLGame.Interfaces
 		int Speed { get; set; }
 		int Size { get; }
 		double Regen { get; set; }
-		Action LastAction { get; set; }
+		BaseAction LastAction { get; set; }
 		List<Bodypart> Bodyparts { get; set; }
-		List<Action> Actions { get; set; }
+		List<BaseAction> Actions { get; set; }
 		
 		bool IsHurt();
 		bool IsDying();

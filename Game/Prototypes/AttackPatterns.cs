@@ -18,7 +18,7 @@ namespace RLGame.Prototypes
 				};
 		}
 
-		public static bool[,] FrontHorizontal3() {
+		public static bool[,] Horizontal3() {
 			return new bool[,] 
 				{
 					{ true, true, true },

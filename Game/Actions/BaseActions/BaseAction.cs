@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace RLGame.Actions.BaseActions
 {
-	abstract public class Action
+	abstract public class BaseAction
 	{
-		public double TimeMultiplier { get; protected set; }
-		public Actor Actor { get; protected set; }
-		public String Name { get; protected set; }
-		public List<ActionTag> Tags { get; protected set; }
+		public double TimeMultiplier;
+		public Actor Actor;
+		public String Name;			
+		public List<ActionTag> Tags;
 
-		protected Action() {
+		protected BaseAction() {
 			Tags = new List<ActionTag>();
 		}
 
