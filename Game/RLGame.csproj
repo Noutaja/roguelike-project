@@ -112,6 +112,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Prototypes\AttackPatterns.cs" />
     <Compile Include="Prototypes\Attacks.cs" />
+    <Compile Include="Prototypes\Monsters.cs" />
     <Compile Include="Systems\GameController.cs" />
     <Compile Include="Systems\MapGenerator.cs" />
     <Compile Include="Systems\MessageLog.cs" />

@@ -347,7 +347,7 @@ namespace RLGame.Systems
 						if ( randomRoomLocation != Point.Zero )
 						{
 							// Temporarily hard code this monster to be created at level 1
-							var monster = new Shade( 1 );
+							var monster = Prototypes.Monsters.Shade();
 							monster.X = randomRoomLocation.X;
 							monster.Y = randomRoomLocation.Y;
 							_map.AddMonster( monster, false );
@@ -366,7 +366,7 @@ namespace RLGame.Systems
 				if ( randomRoomLocation != Point.Zero )
 				{
 					// Temporarily hard code this monster to be created at level 1
-					var monster = new Shade( 1 );
+					var monster = Prototypes.Monsters.Shade();
 					monster.X = randomRoomLocation.X;
 					monster.Y = randomRoomLocation.Y;
 					_map.AddMonster( monster, false );

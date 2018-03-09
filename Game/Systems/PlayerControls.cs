@@ -80,6 +80,14 @@ namespace RLGame.Systems
 			return PlayerControlState.Normal;
 		}
 
+		private bool SystemKeys(RLKey key ) {
+			if ( IsPressed( RLKey.Escape ) )
+			{
+				_rootConsole.Close();
+			}
+			return false;
+		}
+
 		private bool LightAttack( RLKey key ) {
 			if ( IsPressed( RLKey.Keypad5 ) )
 			{
@@ -118,6 +126,7 @@ namespace RLGame.Systems
 			{
 				return CheckMovement();
 			}
+			SystemKeys( key );
 			return false;
 		}
 

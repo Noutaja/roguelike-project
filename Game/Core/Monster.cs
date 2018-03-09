@@ -10,15 +10,15 @@ using System.Threading.Tasks;
 
 namespace RLGame.Core
 {
-	abstract public class Monster : Actor
+	public class Monster : Actor
 	{
 		public int? TurnsAlerted { get; set; }
 		public bool IsVisible { get; set; }
 
-		protected int SimpleHealth { get; set; }
-		protected int SimpleMaxHealth { get; set; }
+		public int SimpleHealth { get; set; }
+		public int SimpleMaxHealth { get; set; }
 
-		protected List<IBehavior> Behaviors { get; set; }
+		public List<IBehavior> Behaviors { get; set; }
 
 		public Monster() {
 			Behaviors = new List<IBehavior>();
