@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RLGame.Interfaces.ActionTypes;
+using RLGame.GameStates;
 
 namespace RLGame.Actions
 {
@@ -28,7 +29,7 @@ namespace RLGame.Actions
 				int x = cell.X;
 				int y = cell.Y;
 
-				if ( Game.GameController.CurrentMap.SetActorPosition( Actor, x, y ) )
+				if ( Main.GameController.CurrentMap.SetActorPosition( Actor, x, y ) )
 				{
 					ModifySpeed();
 					SetLastAction();

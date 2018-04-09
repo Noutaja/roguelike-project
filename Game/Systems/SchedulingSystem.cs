@@ -1,4 +1,5 @@
 ﻿using RLGame.Core;
+using RLGame.GameStates;
 using RLGame.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -64,7 +65,7 @@ namespace RLGame.Systems
 				//Remove the scheduleable from the timeline
 				if ( removeFromTimeline )
 				{
-					Game.Timeline.Remove( scheduleable );
+					Main.Timeline.Remove( scheduleable );
 				}
 
 				//Remove the scheduleable from the list
@@ -81,7 +82,7 @@ namespace RLGame.Systems
 		public IScheduleable Get() {
 			var firstScheduleableGroup = SCHEDULEABLES.First();
 			var firstScheduleable = firstScheduleableGroup.Value.First();
-			Game.Timeline.Add( firstScheduleableGroup.Key, firstScheduleable );
+			Main.Timeline.Add( firstScheduleableGroup.Key, firstScheduleable );
 			Remove( firstScheduleable, false );
 			Time = firstScheduleableGroup.Key;
 			return firstScheduleable;

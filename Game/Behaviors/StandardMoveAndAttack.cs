@@ -1,6 +1,7 @@
 ﻿using RLGame.Actions.BaseActions;
 using RLGame.Behaviors.BaseBehaviors;
 using RLGame.Core;
+using RLGame.GameStates;
 using RLGame.Interfaces;
 using RLGame.Interfaces.ActionTypes;
 using RLGame.Systems;
@@ -26,7 +27,7 @@ namespace RLGame.Behaviors
 				monsterFov.ComputeFov( monster.X, monster.Y, monster.Awareness, true );
 				if ( monsterFov.IsInFov( player.X, player.Y ) )
 				{
-					Game.MessageLog.Add( $"{monster.Name} is eager to fight {player.Name}" );
+					Main.MessageLog.Add( $"{monster.Name} is eager to fight {player.Name}" );
 					monster.TurnsAlerted = 1;
 				}
 			}
@@ -61,7 +62,7 @@ namespace RLGame.Behaviors
 					}
 					catch ( NoMoreStepsException )
 					{
-						Game.MessageLog.Add( $"{monster.Name} growls in frustration" );
+						Main.MessageLog.Add( $"{monster.Name} growls in frustration" );
 					}
 				}
 

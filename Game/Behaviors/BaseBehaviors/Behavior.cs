@@ -1,4 +1,5 @@
 ﻿using RLGame.Core;
+using RLGame.GameStates;
 using RogueSharp;
 using System;
 using System.Collections.Generic;
@@ -19,17 +20,17 @@ namespace RLGame.Behaviors.BaseBehaviors
 		protected Path path;
 
 		public Behavior( int resetAt = 15) {
-			dungeonMap = Game.GameController.CurrentMap;
-			player = Game.GameController.Player;
+			dungeonMap = Main.GameController.CurrentMap;
+			player = Main.GameController.Player;
 			monsterFov = new FieldOfView( dungeonMap );
 			resetTime = resetAt;
 			path = null;
 		}
 
 		protected void Initialize() {
-			if ( dungeonMap != Game.GameController.CurrentMap )
+			if ( dungeonMap != Main.GameController.CurrentMap )
 			{
-				dungeonMap = Game.GameController.CurrentMap;
+				dungeonMap = Main.GameController.CurrentMap;
 				foreach ( Monster m in GetMonsters() )
 				{
 					dungeonMap.SetIsWalkable( m.X, m.Y, true );
@@ -42,7 +43,7 @@ namespace RLGame.Behaviors.BaseBehaviors
 				}
 				dungeonMap.SetIsWalkable( player.X, player.Y, false );
 			}
-			player = Game.GameController.Player;
+			player = Main.GameController.Player;
 			monsterFov = new FieldOfView( dungeonMap );
 		}
 

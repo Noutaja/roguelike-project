@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RLGame.Bodyparts;
 using RLGame.Actions.BaseActions;
+using RLGame.GameStates;
 
 namespace RLGame.Core
 {
@@ -16,7 +17,7 @@ namespace RLGame.Core
 	{
 		public Actor() {
 			
-			Update = Game.SchedulingSystem.update;
+			Update = Main.SchedulingSystem.update;
 			Update.UpdateEvent += OnUpdateEvent;
 
 			_bodyparts = new List<Bodypart>();

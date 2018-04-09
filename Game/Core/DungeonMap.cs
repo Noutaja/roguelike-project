@@ -2,6 +2,7 @@
 using RLNET;
 using System.Collections.Generic;
 using System.Linq;
+using RLGame.GameStates;
 
 namespace RLGame.Core
 {
@@ -21,23 +22,23 @@ namespace RLGame.Core
 			Monsters = new List<Monster>();
 		}
 		public void Initialize() {
-			Game.SchedulingSystem.Clear();
-			Game.SchedulingSystem.Add( Game.SchedulingSystem.update );
+			Main.SchedulingSystem.Clear();
+			Main.SchedulingSystem.Add( Main.SchedulingSystem.update );
 		}
 
 		public void PreLevelChange() {
-			Player player = Game.GameController.Player;
+			Player player = Main.GameController.Player;
 			SetIsWalkable( player.X, player.Y, true );
 
 			foreach ( Monster monster in Monsters )
 			{
 				SetIsWalkable( monster.X, monster.Y, true );
 			}
-			Game.SchedulingSystem.Remove( player, false );
+			Main.SchedulingSystem.Remove( player, false );
 		}
 
 		public void PostLevelChange( bool down ) {
-			Player player = Game.GameController.Player;
+			Player player = Main.GameController.Player;
 			Initialize();
 			if ( down )
 			{
@@ -59,11 +60,11 @@ namespace RLGame.Core
 		}
 
 		public void AddPlayer( Player player ) {
-			Game.GameController.Player = player;
+			Main.GameController.Player = player;
 			SetIsWalkable( player.X, player.Y, false );
 			UpdatePlayerFieldOfView();
-			if ( !Game.SchedulingSystem.Contains( player ) )
-				Game.SchedulingSystem.Add( player );
+			if ( !Main.SchedulingSystem.Contains( player ) )
+				Main.SchedulingSystem.Add( player );
 		}
 
 		public void AddMonster( Monster monster, bool setActive ) {
@@ -72,15 +73,15 @@ namespace RLGame.Core
 			if ( setActive )
 			{
 				SetIsWalkable( monster.X, monster.Y, false );
-				Game.SchedulingSystem.Add( monster );
+				Main.SchedulingSystem.Add( monster );
 			}
 		}
 
 		public void RemoveMonster( Monster monster ) {
 			Monsters.Remove( monster );
 			SetIsWalkable( monster.X, monster.Y, true );
-			Game.SchedulingSystem.Remove( monster, true );
-			Game.SchedulingSystem.update.UpdateEvent -= monster.OnUpdateEvent;
+			Main.SchedulingSystem.Remove( monster, true );
+			Main.SchedulingSystem.update.UpdateEvent -= monster.OnUpdateEvent;
 
 		}
 
@@ -92,7 +93,7 @@ namespace RLGame.Core
 					return monster;
 				}
 			}
-			Player player = Game.GameController.Player;
+			Player player = Main.GameController.Player;
 			if ( player.X == x && player.Y == y )
 			{
 				return player;
@@ -119,12 +120,12 @@ namespace RLGame.Core
 		}
 
 		public bool CanMoveDownToNextLevel() {
-			Player player = Game.GameController.Player;
+			Player player = Main.GameController.Player;
 			return StairsDown.X == player.X && StairsDown.Y == player.Y;
 		}
 
 		public bool CanMoveUpToPreviousLevel() {
-			Player player = Game.GameController.Player;
+			Player player = Main.GameController.Player;
 			return StairsUp.X == player.X && StairsUp.Y == player.Y && MapLevel > 1;
 		}
 
@@ -168,7 +169,7 @@ namespace RLGame.Core
 		}
 
 		public void UpdatePlayerFieldOfView() {
-			Player player = Game.GameController.Player;
+			Player player = Main.GameController.Player;
 			ComputeFov( player.X, player.Y, player.Awareness, true );
 			foreach ( Cell cell in GetAllCells() )
 			{
@@ -194,7 +195,7 @@ namespace RLGame.Core
 			foreach ( Monster monster in Monsters )
 			{
 				monster.Draw( mapConsole, this );
-				monster.UpdateTimeline( Game.Timeline, this );
+				monster.UpdateTimeline( Main.Timeline, this );
 			}
 
 			int i = 0;

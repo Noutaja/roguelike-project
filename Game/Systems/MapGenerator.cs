@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RLGame.Core;
+using RLGame.GameStates;
 using RLGame.Monsters;
 using RLNET;
 using RogueSharp;
@@ -318,7 +319,7 @@ namespace RLGame.Systems
 		}
 
 		private void PlacePlayer() {
-			Player player = Game.GameController.Player;
+			Player player = Main.GameController.Player;
 			if ( player == null )
 			{
 				player = new Player();

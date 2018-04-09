@@ -1,4 +1,5 @@
-﻿using RLGame.Interfaces;
+﻿using RLGame.GameStates;
+using RLGame.Interfaces;
 using RogueSharp;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace RLGame.Core
 			_area = new List<ICell>();
 			_damage = damage;
 			_speed = speed;
-			Game.SchedulingSystem.Add( this );
+			Main.SchedulingSystem.Add( this );
 		}
 
 		public void Activate() {
@@ -44,31 +45,31 @@ namespace RLGame.Core
 			//Deal damage
 			if ( !_targets.Any() )
 			{
-				Game.MessageLog.Add( $"  {_attacker.Name}'s {_name} missed" );
+				Main.MessageLog.Add( $"  {_attacker.Name}'s {_name} missed" );
 				return;
 			}
 
 				foreach(Actor defender in _targets )
 				{
 					Bodypart bodypart = defender.TakeDamage( _damage, defender.GetBodypart( true ) );
-					Game.MessageLog.Add( $"  {defender.Name}'s {bodypart.Name} was hit for {_damage} damage" );
+					Main.MessageLog.Add( $"  {defender.Name}'s {bodypart.Name} was hit for {_damage} damage" );
 
 					if(defender is Player )
 					{
-						Game.Timeline.Add(Game.SchedulingSystem.Time, _hitmarker );
+						Main.Timeline.Add(Main.SchedulingSystem.Time, _hitmarker );
 					}
 
 					if ( defender.IsDying() )
 					{
 						if ( defender is Player )
 						{
-							Game.MessageLog.Add( $"  {defender.Name} was killed, GAME OVER MAN!" );
+							Main.MessageLog.Add( $"  {defender.Name} was killed, GAME OVER MAN!" );
 						}
 						else if ( defender is Monster )
 						{
-							Game.GameController.CurrentMap.RemoveMonster( (Monster) defender );
+							Main.GameController.CurrentMap.RemoveMonster( (Monster) defender );
 
-							Game.MessageLog.Add( $"  {defender.Name} died." );
+							Main.MessageLog.Add( $"  {defender.Name} died." );
 						}
 					}
 				}
@@ -85,7 +86,7 @@ namespace RLGame.Core
 		}
 
 		private Actor GetActorAt( int x, int y ) {
-			DungeonMap map = Game.GameController.CurrentMap;
+			DungeonMap map = Main.GameController.CurrentMap;
 			return map.GetActorAt( x, y );
 		}
 

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using RLGame.GameStates;
 
 namespace RLGame.Systems
 {
@@ -35,7 +36,7 @@ namespace RLGame.Systems
 			Player = new Player() { X = -1, Y = -1};
 		}
 
-		public void Initialize() {
+		public void Init() {
 			MapGenerator mapGenerator = new MapGenerator( MAXMAPWIDTH, MAXMAPHEIGHT, 50, 8, 4, 1, true );
 			CurrentMap = mapGenerator.CreateMap();
 			//CurrentMap.UpdatePlayerFieldOfView();
@@ -50,7 +51,7 @@ namespace RLGame.Systems
 		}
 
 		public void AdvanceTime() {
-			IScheduleable scheduleable = Game.SchedulingSystem.Get();
+			IScheduleable scheduleable = Main.SchedulingSystem.Get();
 
 			if ( scheduleable is Player )
 			{
@@ -66,14 +67,14 @@ namespace RLGame.Systems
 			{
 				Monster monster = scheduleable as Monster;
 				monster.Activate();
-				Game.SchedulingSystem.Add( monster );
+				Main.SchedulingSystem.Add( monster );
 				AdvanceTime();
 			}
 			else if ( scheduleable is Update )
 			{
 				Update update = scheduleable as Update;
 				update.Activate();
-				Game.SchedulingSystem.Add( update );
+				Main.SchedulingSystem.Add( update );
 				AdvanceTime();
 			}
 		}
@@ -90,9 +91,9 @@ namespace RLGame.Systems
 				CurrentMap = Maps[newLevel - 1];
 
 			CurrentMap.PostLevelChange( down );
-			Game.MessageLog.Clear();
-			Game.MessageLog.Add( $"Entering level {CurrentMap.MapLevel}" );
-			Game.Timeline.Clear();
+			Main.MessageLog.Clear();
+			Main.MessageLog.Add( $"Entering level {CurrentMap.MapLevel}" );
+			Main.Timeline.Clear();
 			IsPlayerTurn = false;
 
 			bool lastGenerated;

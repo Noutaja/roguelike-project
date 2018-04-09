@@ -78,6 +78,7 @@
     <Compile Include="Core\Attack.cs" />
     <Compile Include="Core\PlayerControlState.cs" />
     <Compile Include="Core\TimelineEvent.cs" />
+    <Compile Include="GameStates\Main.cs" />
     <Compile Include="Helpers\ArrayExtensions.cs" />
     <Compile Include="Interfaces\ActionTypes\ICellAction.cs" />
     <Compile Include="Interfaces\ActionTypes\ISelfAction.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="Interfaces\IActor.cs" />
     <Compile Include="Interfaces\IBehavior.cs" />
     <Compile Include="Interfaces\IDrawable.cs" />
+    <Compile Include="Interfaces\IGameState.cs" />
     <Compile Include="Interfaces\IScheduleable.cs" />
     <Compile Include="Interfaces\IUpdateable.cs" />
     <Compile Include="Monsters\Kobold.cs" />

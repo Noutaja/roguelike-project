@@ -1,5 +1,6 @@
 ﻿using RLGame.Behaviors.BaseBehaviors;
 using RLGame.Core;
+using RLGame.GameStates;
 using RLGame.Interfaces;
 using RLGame.Interfaces.ActionTypes;
 using RogueSharp;
@@ -21,7 +22,7 @@ namespace RLGame.Behaviors
 			{
 				if ( path == null )
 				{
-					Game.MessageLog.Add( $"{monster.Name} is eager to fight {player.Name}" );
+					Main.MessageLog.Add( $"{monster.Name} is eager to fight {player.Name}" );
 				}
 				path = CreatePath( monster );
 			}

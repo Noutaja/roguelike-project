@@ -1,6 +1,7 @@
 ﻿using OpenTK.Input;
 using RLGame.Actions.BaseActions;
 using RLGame.Core;
+using RLGame.GameStates;
 using RLGame.Interfaces;
 using RLGame.Interfaces.ActionTypes;
 using RLNET;
@@ -20,9 +21,9 @@ namespace RLGame.Systems
 		private List<RLKey> pressedKeys;
 		private RLKey lastMovementKey = RLKey.Unknown;
 		private Direction lastDirection = Direction.None;
-		public GameController GameController = Game.GameController;
+		public GameController GameController = Main.GameController;
 		private DungeonMap map;
-		private Player player = Game.GameController.Player;
+		private Player player = Main.GameController.Player;
 		private PlayerControlState controlState;
 		private Dictionary<PlayerControlState, Func<RLKey, bool>> controls;
 		private bool debug = true;
@@ -69,7 +70,7 @@ namespace RLGame.Systems
 			if ( didPlayerAct )
 			{
 				//Add the player back into scheduling system, after taking an action(and getting a new speed)
-				Game.SchedulingSystem.Add( player );
+				Main.SchedulingSystem.Add( player );
 				GameController.EndPlayerTurn();
 			}
 			controlState = ResetState();
@@ -135,7 +136,7 @@ namespace RLGame.Systems
 			{
 				Console.WriteLine( "--------------------------" );
 				int i = 0;
-				foreach ( var a in Game.SchedulingSystem.SCHEDULEABLES )
+				foreach ( var a in Main.SchedulingSystem.SCHEDULEABLES )
 				{
 					foreach ( IScheduleable b in a.Value )
 					{
