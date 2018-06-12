@@ -319,7 +319,7 @@ namespace RLGame.Systems
 		}
 
 		private void PlacePlayer() {
-			Player player = Main.GameController.Player;
+			Player player = MainScreen.GameController.Player;
 			if ( player == null )
 			{
 				player = new Player();

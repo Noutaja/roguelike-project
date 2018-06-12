@@ -17,7 +17,7 @@ namespace RLGame.Core
 	{
 		public Actor() {
 			
-			Update = Main.SchedulingSystem.update;
+			Update = GameController.SchedulingSystem.update;
 			Update.UpdateEvent += OnUpdateEvent;
 
 			_bodyparts = new List<Bodypart>();

@@ -13,7 +13,7 @@ using Weighted_Randomizer;
 
 namespace RLGame.GameStates
 {
-	public class Main : IGameState {
+	public class MainScreen : IGameState {
 		public bool Transparent { get; }
 		public bool Pauses { get; }
 		
@@ -44,32 +44,27 @@ namespace RLGame.GameStates
 					PlayerControls.GameController = value;
 			}
 		}
-		public static SchedulingSystem SchedulingSystem { get; private set; }
-		public static Timeline Timeline { get; private set; }
 		public static MessageLog MessageLog { get; private set; }
-		public static PlayerControls PlayerControls { get; private set; }
-		public static DungeonMap CurrentMap { get; private set; }
-		public static List<DungeonMap> Maps { get; private set; }
+		public static DungeonControls PlayerControls { get; private set; }
+		//public static List<DungeonMap> Maps { get; private set; }
 
-		public Main(bool transparent, bool pause) {
+		public MainScreen(bool transparent, bool pauses, RLRootConsole rootConsole) {
+			_rootConsole = rootConsole;
 			Transparent = transparent;
-			Pauses = pause;
+			Pauses = pauses;
 			_mapConsole = new RLConsole( MAPWIDTH, MAPHEIGHT );
 			_messageConsole = new RLConsole( MESSAGEWIDTH, MESSAGEHEIGHT );
 			_statConsole = new RLConsole( STATWIDTH, STATHEIGHT );
 			_timeLineConsole = new RLConsole( TIMELINEWIDTH, TIMELINEHEIGHT );
 
-			Maps = new List<DungeonMap>();
-			SchedulingSystem = new SchedulingSystem();
+			//Maps = new List<DungeonMap>();
 			GameController = new GameController( MAPWIDTH, MAPHEIGHT );
-			Timeline = new Timeline();
 			MessageLog = new MessageLog();
-			PlayerControls = new PlayerControls( _rootConsole );
 		}
 
-		public void Init( RLRootConsole rootConsole ) {
-			_rootConsole = rootConsole;
+		public void Init() {
 			GameController.Init();
+			PlayerControls = new DungeonControls( _rootConsole );
 		}
 
 		public void Close() {
@@ -102,7 +97,7 @@ namespace RLGame.GameStates
 			GameController.Player.Draw( _mapConsole, GameController.CurrentMap );
 			GameController.Player.DrawStats( _statConsole );
 			MessageLog.Draw( _messageConsole );
-			Timeline.Draw( _timeLineConsole );
+			GameController.Timeline.Draw( _timeLineConsole );
 
 			RLConsole.Blit( _mapConsole, 0, 0, MAPWIDTH, MAPHEIGHT,
 				_rootConsole, 0, TIMELINEHEIGHT );

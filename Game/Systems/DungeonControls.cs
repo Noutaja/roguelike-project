@@ -15,20 +15,20 @@ using System.Windows.Input;
 
 namespace RLGame.Systems
 {
-	public class PlayerControls
+	public class DungeonControls
 	{
 		private readonly RLRootConsole _rootConsole;
 		private List<RLKey> pressedKeys;
 		private RLKey lastMovementKey = RLKey.Unknown;
 		private Direction lastDirection = Direction.None;
-		public GameController GameController = Main.GameController;
+		public GameController GameController = MainScreen.GameController;
 		private DungeonMap map;
-		private Player player = Main.GameController.Player;
+		private Player player = MainScreen.GameController.Player;
 		private PlayerControlState controlState;
 		private Dictionary<PlayerControlState, Func<RLKey, bool>> controls;
 		private bool debug = true;
 
-		public PlayerControls( RLRootConsole rootConsole ) {
+		public DungeonControls( RLRootConsole rootConsole ) {
 			_rootConsole = rootConsole;
 			pressedKeys = new List<RLKey>();
 			controlState = PlayerControlState.Normal;
@@ -70,7 +70,7 @@ namespace RLGame.Systems
 			if ( didPlayerAct )
 			{
 				//Add the player back into scheduling system, after taking an action(and getting a new speed)
-				Main.SchedulingSystem.Add( player );
+				GameController.SchedulingSystem.Add( player );
 				GameController.EndPlayerTurn();
 			}
 			controlState = ResetState();
@@ -136,7 +136,7 @@ namespace RLGame.Systems
 			{
 				Console.WriteLine( "--------------------------" );
 				int i = 0;
-				foreach ( var a in Main.SchedulingSystem.SCHEDULEABLES )
+				foreach ( var a in GameController.SchedulingSystem.SCHEDULEABLES )
 				{
 					foreach ( IScheduleable b in a.Value )
 					{

@@ -1,5 +1,6 @@
 ﻿using RLGame.GameStates;
 using RLGame.Interfaces;
+using RLGame.Systems;
 using RogueSharp;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace RLGame.Core
 			_area = new List<ICell>();
 			_damage = damage;
 			_speed = speed;
-			Main.SchedulingSystem.Add( this );
+			GameController.SchedulingSystem.Add( this );
 		}
 
 		public void Activate() {
@@ -45,31 +46,31 @@ namespace RLGame.Core
 			//Deal damage
 			if ( !_targets.Any() )
 			{
-				Main.MessageLog.Add( $"  {_attacker.Name}'s {_name} missed" );
+				MainScreen.MessageLog.Add( $"  {_attacker.Name}'s {_name} missed" );
 				return;
 			}
 
 				foreach(Actor defender in _targets )
 				{
 					Bodypart bodypart = defender.TakeDamage( _damage, defender.GetBodypart( true ) );
-					Main.MessageLog.Add( $"  {defender.Name}'s {bodypart.Name} was hit for {_damage} damage" );
+					MainScreen.MessageLog.Add( $"  {defender.Name}'s {bodypart.Name} was hit for {_damage} damage" );
 
 					if(defender is Player )
 					{
-						Main.Timeline.Add(Main.SchedulingSystem.Time, _hitmarker );
+						GameController.Timeline.Add(GameController.SchedulingSystem.Time, _hitmarker );
 					}
 
 					if ( defender.IsDying() )
 					{
 						if ( defender is Player )
 						{
-							Main.MessageLog.Add( $"  {defender.Name} was killed, GAME OVER MAN!" );
+							MainScreen.MessageLog.Add( $"  {defender.Name} was killed, GAME OVER MAN!" );
 						}
 						else if ( defender is Monster )
 						{
-							Main.GameController.CurrentMap.RemoveMonster( (Monster) defender );
+							MainScreen.GameController.CurrentMap.RemoveMonster( (Monster) defender );
 
-							Main.MessageLog.Add( $"  {defender.Name} died." );
+							MainScreen.MessageLog.Add( $"  {defender.Name} died." );
 						}
 					}
 				}
@@ -86,7 +87,7 @@ namespace RLGame.Core
 		}
 
 		private Actor GetActorAt( int x, int y ) {
-			DungeonMap map = Main.GameController.CurrentMap;
+			DungeonMap map = MainScreen.GameController.CurrentMap;
 			return map.GetActorAt( x, y );
 		}
 

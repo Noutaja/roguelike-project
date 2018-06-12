@@ -18,7 +18,7 @@ namespace RLGame.Systems
 
 		public List<Actor> VisibleActors {
 			get {
-				Player player = Main.GameController.Player;
+				Player player = MainScreen.GameController.Player;
 				if ( !_visibleActors.Contains( player ) )
 					_visibleActors.Add( player );
 
@@ -40,7 +40,7 @@ namespace RLGame.Systems
 
 		//Used to remove entries too old to fit on the timeline
 		public void Cull() {
-			int currentTime = Main.SchedulingSystem.Time;
+			int currentTime = GameController.SchedulingSystem.Time;
 
 
 			while ( SCHEDULEABLES.Any() )
@@ -57,7 +57,7 @@ namespace RLGame.Systems
 		}
 
 		public void Add( int time, IScheduleable scheduleable ) {
-			int currentTime = Main.SchedulingSystem.Time;
+			int currentTime = GameController.SchedulingSystem.Time;
 			if ( scheduleable.History )
 			{
 				if ( scheduleable is Actor )
@@ -123,7 +123,7 @@ namespace RLGame.Systems
 		public void Draw( RLConsole console ) {
 			int topPadding = 3;
 			int leftPadding = 10;
-			int currentTime = Main.SchedulingSystem.Time;
+			int currentTime = GameController.SchedulingSystem.Time;
 			DrawGraph( console, topPadding, leftPadding );
 
 			Cull();
@@ -141,7 +141,7 @@ namespace RLGame.Systems
 					List<IScheduleable> scheduleableList = scheduleables.Value;
 					int scheduleableTime = scheduleables.Key;
 					
-					int timeDifference = Main.SchedulingSystem.Time - scheduleableTime;
+					int timeDifference = GameController.SchedulingSystem.Time - scheduleableTime;
 					int xPosition = ( timeLineLength + leftPadding ) - ( timeDifference );
 
 					foreach ( IScheduleable scheduleable in scheduleableList )
@@ -168,7 +168,7 @@ namespace RLGame.Systems
 					int scheduleableTime = scheduleables.Key;
 
 					int i = 0;
-					int timeDifference = Main.SchedulingSystem.Time - scheduleableTime;
+					int timeDifference = GameController.SchedulingSystem.Time - scheduleableTime;
 					int xPosition = ( timeLineLength + leftPadding ) - ( timeDifference );
 
 					

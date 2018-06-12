@@ -11,7 +11,7 @@ namespace RLGame.Interfaces
 	{
 		bool Transparent { get; }
 		bool Pauses { get; }
-		void Init(RLRootConsole rootConsole);
+		void Init();
 		void Close();
 		bool OnUpdate( RLKeyPress keyPress );
 		void OnRender();

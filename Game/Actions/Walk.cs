@@ -29,7 +29,7 @@ namespace RLGame.Actions
 				int x = cell.X;
 				int y = cell.Y;
 
-				if ( Main.GameController.CurrentMap.SetActorPosition( Actor, x, y ) )
+				if ( MainScreen.GameController.CurrentMap.SetActorPosition( Actor, x, y ) )
 				{
 					ModifySpeed();
 					SetLastAction();

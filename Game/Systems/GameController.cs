@@ -19,6 +19,8 @@ namespace RLGame.Systems
 		private object mapsLock = new object();
 		public List<DungeonMap> Maps { get; private set; }
 		public DungeonMap CurrentMap { get; private set; }
+		public static SchedulingSystem SchedulingSystem { get; private set; }
+		public static Timeline Timeline { get; private set; }
 		private readonly int MAXMAPWIDTH;
 		private readonly int MAXMAPHEIGHT;
 		public Player Player;
@@ -32,11 +34,13 @@ namespace RLGame.Systems
 			Maps = new List<DungeonMap>();
 			MAXMAPWIDTH = maxMapWidth;
 			MAXMAPHEIGHT = maxMapHeight;
-
-			Player = new Player() { X = -1, Y = -1};
 		}
 
 		public void Init() {
+			SchedulingSystem = new SchedulingSystem();
+			Timeline = new Timeline();
+
+			Player = new Player() { X = -1, Y = -1 };
 			MapGenerator mapGenerator = new MapGenerator( MAXMAPWIDTH, MAXMAPHEIGHT, 50, 8, 4, 1, true );
 			CurrentMap = mapGenerator.CreateMap();
 			//CurrentMap.UpdatePlayerFieldOfView();
@@ -51,7 +55,7 @@ namespace RLGame.Systems
 		}
 
 		public void AdvanceTime() {
-			IScheduleable scheduleable = Main.SchedulingSystem.Get();
+			IScheduleable scheduleable = SchedulingSystem.Get();
 
 			if ( scheduleable is Player )
 			{
@@ -67,14 +71,14 @@ namespace RLGame.Systems
 			{
 				Monster monster = scheduleable as Monster;
 				monster.Activate();
-				Main.SchedulingSystem.Add( monster );
+				SchedulingSystem.Add( monster );
 				AdvanceTime();
 			}
 			else if ( scheduleable is Update )
 			{
 				Update update = scheduleable as Update;
 				update.Activate();
-				Main.SchedulingSystem.Add( update );
+				SchedulingSystem.Add( update );
 				AdvanceTime();
 			}
 		}
@@ -91,9 +95,9 @@ namespace RLGame.Systems
 				CurrentMap = Maps[newLevel - 1];
 
 			CurrentMap.PostLevelChange( down );
-			Main.MessageLog.Clear();
-			Main.MessageLog.Add( $"Entering level {CurrentMap.MapLevel}" );
-			Main.Timeline.Clear();
+			MainScreen.MessageLog.Clear();
+			MainScreen.MessageLog.Add( $"Entering level {CurrentMap.MapLevel}" );
+			Timeline.Clear();
 			IsPlayerTurn = false;
 
 			bool lastGenerated;

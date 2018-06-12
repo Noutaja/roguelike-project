@@ -22,7 +22,7 @@ namespace RLGame.Behaviors
 			{
 				if ( path == null )
 				{
-					Main.MessageLog.Add( $"{monster.Name} is eager to fight {player.Name}" );
+					MainScreen.MessageLog.Add( $"{monster.Name} is eager to fight {player.Name}" );
 				}
 				path = CreatePath( monster );
 			}

@@ -27,7 +27,7 @@ namespace RLGame.Behaviors
 				monsterFov.ComputeFov( monster.X, monster.Y, monster.Awareness, true );
 				if ( monsterFov.IsInFov( player.X, player.Y ) )
 				{
-					Main.MessageLog.Add( $"{monster.Name} is eager to fight {player.Name}" );
+					MainScreen.MessageLog.Add( $"{monster.Name} is eager to fight {player.Name}" );
 					monster.TurnsAlerted = 1;
 				}
 			}
@@ -62,7 +62,7 @@ namespace RLGame.Behaviors
 					}
 					catch ( NoMoreStepsException )
 					{
-						Main.MessageLog.Add( $"{monster.Name} growls in frustration" );
+						MainScreen.MessageLog.Add( $"{monster.Name} growls in frustration" );
 					}
 				}
 

@@ -78,7 +78,8 @@
     <Compile Include="Core\Attack.cs" />
     <Compile Include="Core\PlayerControlState.cs" />
     <Compile Include="Core\TimelineEvent.cs" />
-    <Compile Include="GameStates\Main.cs" />
+    <Compile Include="GameStates\InventoryScreen.cs" />
+    <Compile Include="GameStates\MainScreen.cs" />
     <Compile Include="Helpers\ArrayExtensions.cs" />
     <Compile Include="Interfaces\ActionTypes\ICellAction.cs" />
     <Compile Include="Interfaces\ActionTypes\ISelfAction.cs" />
@@ -118,7 +119,7 @@
     <Compile Include="Systems\GameController.cs" />
     <Compile Include="Systems\MapGenerator.cs" />
     <Compile Include="Systems\MessageLog.cs" />
-    <Compile Include="Systems\PlayerControls.cs" />
+    <Compile Include="Systems\DungeonControls.cs" />
     <Compile Include="Systems\Timeline.cs" />
     <Compile Include="Systems\SchedulingSystem.cs" />
   </ItemGroup>

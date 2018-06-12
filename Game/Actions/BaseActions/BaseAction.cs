@@ -1,6 +1,7 @@
 ﻿using RLGame.Core;
 using RLGame.GameStates;
 using RLGame.Interfaces;
+using RLGame.Systems;
 using RogueSharp;
 using System;
 using System.Collections.Generic;
@@ -22,22 +23,22 @@ namespace RLGame.Actions.BaseActions
 		}
 
 		protected ICell GetCell( int x, int y ) {
-			DungeonMap map = Main.GameController.CurrentMap;
+			DungeonMap map = MainScreen.GameController.CurrentMap;
 			return map.GetCell( x, y );
 		}
 
 		protected Actor GetActorAt(int x, int y) {
-			DungeonMap map = Main.GameController.CurrentMap;
+			DungeonMap map = MainScreen.GameController.CurrentMap;
 			return map.GetActorAt( x, y );
 		}
 
 		protected Actor GetActorAt(ICell cell ) {
-			DungeonMap map = Main.GameController.CurrentMap;
+			DungeonMap map = MainScreen.GameController.CurrentMap;
 			return map.GetActorAt( cell.X, cell.Y );
 		}
 
 		protected void AddToScheduling(IScheduleable scheduleable) {
-			Main.SchedulingSystem.Add( scheduleable );
+			GameController.SchedulingSystem.Add( scheduleable );
 		}
 
 		protected void ModifySpeed() {

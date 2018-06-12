@@ -35,11 +35,10 @@ namespace RLGame
 			_rootConsole = new RLRootConsole( fontFileName, SCREENWIDTH, SCREENHEIGHT, 8, 8, 1f, consoleTitle );
 
 			_gameStack = new Stack<IGameState>();
-			Main main = new Main( false, true );
-			main.Init( _rootConsole );
+			MainScreen main = new MainScreen( false, true, _rootConsole );
+			main.Init();
 			_gameStack.Push( main );
 			
-
 			_rootConsole.Update += OnRootConsoleUpdate;
 			_rootConsole.Render += OnRootConsoleRender;
 			_rootConsole.Run();

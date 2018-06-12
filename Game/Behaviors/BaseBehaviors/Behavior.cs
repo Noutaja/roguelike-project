@@ -20,17 +20,17 @@ namespace RLGame.Behaviors.BaseBehaviors
 		protected Path path;
 
 		public Behavior( int resetAt = 15) {
-			dungeonMap = Main.GameController.CurrentMap;
-			player = Main.GameController.Player;
+			dungeonMap = MainScreen.GameController.CurrentMap;
+			player = MainScreen.GameController.Player;
 			monsterFov = new FieldOfView( dungeonMap );
 			resetTime = resetAt;
 			path = null;
 		}
 
 		protected void Initialize() {
-			if ( dungeonMap != Main.GameController.CurrentMap )
+			if ( dungeonMap != MainScreen.GameController.CurrentMap )
 			{
-				dungeonMap = Main.GameController.CurrentMap;
+				dungeonMap = MainScreen.GameController.CurrentMap;
 				foreach ( Monster m in GetMonsters() )
 				{
 					dungeonMap.SetIsWalkable( m.X, m.Y, true );
@@ -43,7 +43,7 @@ namespace RLGame.Behaviors.BaseBehaviors
 				}
 				dungeonMap.SetIsWalkable( player.X, player.Y, false );
 			}
-			player = Main.GameController.Player;
+			player = MainScreen.GameController.Player;
 			monsterFov = new FieldOfView( dungeonMap );
 		}
 
