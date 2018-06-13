@@ -18,7 +18,7 @@ namespace RLGame
 		private static RLRootConsole _rootConsole;
 
 		private static Stack<IGameState> _gameStack;
-		
+
 		public static IRandom Random { get; private set; }
 		public static IWeightedRandomizer<Bodypart> WeightedRandom;
 

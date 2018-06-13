@@ -46,7 +46,6 @@ namespace RLGame.GameStates
 		}
 		public static MessageLog MessageLog { get; private set; }
 		public static DungeonControls PlayerControls { get; private set; }
-		//public static List<DungeonMap> Maps { get; private set; }
 
 		public MainScreen(bool transparent, bool pauses, RLRootConsole rootConsole) {
 			_rootConsole = rootConsole;
@@ -56,8 +55,7 @@ namespace RLGame.GameStates
 			_messageConsole = new RLConsole( MESSAGEWIDTH, MESSAGEHEIGHT );
 			_statConsole = new RLConsole( STATWIDTH, STATHEIGHT );
 			_timeLineConsole = new RLConsole( TIMELINEWIDTH, TIMELINEHEIGHT );
-
-			//Maps = new List<DungeonMap>();
+			
 			GameController = new GameController( MAPWIDTH, MAPHEIGHT );
 			MessageLog = new MessageLog();
 		}

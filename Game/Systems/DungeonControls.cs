@@ -127,6 +127,12 @@ namespace RLGame.Systems
 			{
 				return CheckMovement();
 			}
+			else if ( IsPressed( RLKey.Comma ) )
+			{
+				Item item = GameController.CurrentMap.GetItemAt( player.X, player.Y );
+				GameController.CurrentMap.RemoveItem( item );
+				GameController.InventorySystem.AddItem( item );
+			}
 			SystemKeys( key );
 			return false;
 		}
@@ -147,6 +153,17 @@ namespace RLGame.Systems
 				Console.WriteLine( "--------------------------" );
 				Console.WriteLine( $"Scheduling entities: {i - 1}" );
 				Console.WriteLine( $"Map entities: {GameController.CurrentMap.Monsters.Count}" );
+				Console.WriteLine();
+			}
+			else if ( IsPressed( RLKey.I ) )
+			{
+				Console.WriteLine( "--------------------------" );
+				foreach ( var a in GameController.CurrentMap.Items )
+				{
+					Console.WriteLine($"{a.X}, {a.Y}");
+				}
+				Console.WriteLine( "--------------------------" );
+				Console.WriteLine($"Inventory: {GameController.InventorySystem.ItemCount()}");
 				Console.WriteLine();
 			}
 			else if ( IsPressed( RLKey.C ) )

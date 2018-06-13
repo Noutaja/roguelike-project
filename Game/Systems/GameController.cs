@@ -21,6 +21,7 @@ namespace RLGame.Systems
 		public DungeonMap CurrentMap { get; private set; }
 		public static SchedulingSystem SchedulingSystem { get; private set; }
 		public static Timeline Timeline { get; private set; }
+		public static InventorySystem InventorySystem { get; private set; }
 		private readonly int MAXMAPWIDTH;
 		private readonly int MAXMAPHEIGHT;
 		public Player Player;
@@ -39,6 +40,8 @@ namespace RLGame.Systems
 		public void Init() {
 			SchedulingSystem = new SchedulingSystem();
 			Timeline = new Timeline();
+			InventorySystem = new InventorySystem();
+			InventorySystem.Init();
 
 			Player = new Player() { X = -1, Y = -1 };
 			MapGenerator mapGenerator = new MapGenerator( MAXMAPWIDTH, MAXMAPHEIGHT, 50, 8, 4, 1, true );

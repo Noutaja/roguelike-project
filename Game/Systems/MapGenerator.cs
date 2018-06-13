@@ -80,7 +80,8 @@ namespace RLGame.Systems
 			CreateHallways();
 			_map.islands = _islands;
 			CreateStairs();
-			
+
+			GenerateItems();
 			GenerateMonsters();
 
 			return _map;
@@ -367,11 +368,34 @@ namespace RLGame.Systems
 				if ( randomRoomLocation != Point.Zero )
 				{
 					// Temporarily hard code this monster to be created at level 1
-					var monster = Prototypes.Monsters.Shade();
+					Monster monster = Prototypes.Monsters.Shade();
 					monster.X = randomRoomLocation.X;
 					monster.Y = randomRoomLocation.Y;
 					_map.AddMonster( monster, false );
 				}
+			}
+		}
+
+		private void GenerateItems() {
+			foreach ( var island in _islands )
+			{
+				Rectangle room = island[Game.Random.Next( island.Count - 1 )];
+
+				Point randomRoomLocation = _map.GetRandomWalkableLocationInRoom( room );
+				// It's possible that the room doesn't have space to place a monster
+				// In that case skip creating the monster
+				if ( randomRoomLocation != Point.Zero )
+				{
+					// Temporarily hard code this monster to be created at level 1
+					Item item = new Item();
+					item.X = randomRoomLocation.X;
+					item.Y = randomRoomLocation.Y;
+					_map.AddItem( item );
+
+				}
+
+
+
 			}
 		}
 	}

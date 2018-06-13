@@ -13,6 +13,7 @@ namespace RLGame.Core
 
 		public List<Rectangle> Rooms;
 		public List<Monster> Monsters { get; private set; }
+		public List<Item> Items { get; private set; }
 		public List<List<Rectangle>> islands;
 
 		public Stairs StairsUp { get; set; }
@@ -21,6 +22,7 @@ namespace RLGame.Core
 		public DungeonMap() {
 			Rooms = new List<Rectangle>();
 			Monsters = new List<Monster>();
+			Items = new List<Item>();
 		}
 		public void Initialize() {
 			GameController.SchedulingSystem.Clear();
@@ -86,6 +88,15 @@ namespace RLGame.Core
 
 		}
 
+		public void AddItem( Item item ) {
+			if ( !Items.Contains( item ) )
+				Items.Add( item );
+		}
+
+		public void RemoveItem( Item item ) {
+			Items.Remove( item );
+		}
+
 		public Actor GetActorAt( int x, int y ) {
 			foreach ( Monster monster in Monsters )
 			{
@@ -98,6 +109,17 @@ namespace RLGame.Core
 			if ( player.X == x && player.Y == y )
 			{
 				return player;
+			}
+			return null;
+		}
+
+		public Item GetItemAt( int x, int y ) {
+			foreach ( Item item in Items )
+			{
+				if ( item.X == x && item.Y == y )
+				{
+					return item;
+				}
 			}
 			return null;
 		}
@@ -211,6 +233,12 @@ namespace RLGame.Core
 					monster.DrawStats( statConsole, i );
 					i++;
 				}
+			}
+
+			//Draw items
+			foreach ( Item item in Items )
+			{
+				item.Draw( mapConsole, this );
 			}
 		}
 

@@ -76,6 +76,7 @@
     <Compile Include="Behaviors\HuntPlayer.cs" />
     <Compile Include="Core\ActionTag.cs" />
     <Compile Include="Core\Attack.cs" />
+    <Compile Include="Core\Item.cs" />
     <Compile Include="Core\PlayerControlState.cs" />
     <Compile Include="Core\TimelineEvent.cs" />
     <Compile Include="GameStates\InventoryScreen.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Prototypes\Attacks.cs" />
     <Compile Include="Prototypes\Monsters.cs" />
     <Compile Include="Systems\GameController.cs" />
+    <Compile Include="Systems\InventorySystem.cs" />
     <Compile Include="Systems\MapGenerator.cs" />
     <Compile Include="Systems\MessageLog.cs" />
     <Compile Include="Systems\DungeonControls.cs" />
