@@ -18,9 +18,10 @@ namespace RLGame
 		private static RLRootConsole _rootConsole;
 
 		private static Stack<IGameState> _gameStack;
+		private static IGameState _newGameState;
 
 		public static IRandom Random { get; private set; }
-		public static IWeightedRandomizer<Bodypart> WeightedRandom;
+		public static IWeightedRandomizer<IWRandomizable> WeightedRandom;
 
 		static void Main( string[] args ) {
 			Keyboard.GetState();//IT JUST WERKS NOW?? PLS FIX :D (OnRootConsoleUpdate)
@@ -28,13 +29,14 @@ namespace RLGame
 
 			//Initialize RNG
 			int seed = (int) DateTime.UtcNow.Ticks;
-			WeightedRandom = new StaticWeightedRandomizer<Bodypart>( seed );
+			WeightedRandom = new StaticWeightedRandomizer<IWRandomizable>( seed );
 			Random = new DotNetRandom( seed );
 			string consoleTitle = $"RLGame Seed {seed}"; //Show the seed
 
 			_rootConsole = new RLRootConsole( fontFileName, SCREENWIDTH, SCREENHEIGHT, 8, 8, 1f, consoleTitle );
 
 			_gameStack = new Stack<IGameState>();
+			_newGameState = null;
 			MainScreen main = new MainScreen( false, true, _rootConsole );
 			main.Init();
 			_gameStack.Push( main );
@@ -42,6 +44,10 @@ namespace RLGame
 			_rootConsole.Update += OnRootConsoleUpdate;
 			_rootConsole.Render += OnRootConsoleRender;
 			_rootConsole.Run();
+		}
+
+		public static void PushOnGameStack(IGameState state ) {
+			_newGameState = state;
 		}
 
 		private static void OnRootConsoleUpdate( object sender, UpdateEventArgs e ) {
@@ -67,10 +73,14 @@ namespace RLGame
 			{
 				_gameStack.Push( s.Pop() );
 			}
+			if(_newGameState != null )
+			{
+				_gameStack.Push( _newGameState );
+				_newGameState = null;
+			}
 		}
 
 		private static void OnRootConsoleRender( object sender, UpdateEventArgs e ) {
-
 			Stack<IGameState> s = new Stack<IGameState>();
 			IGameState state = null;
 			do
@@ -79,7 +89,7 @@ namespace RLGame
 				s.Push( state );
 				state.OnRender();
 			}
-			while ( !state.Transparent && _gameStack.Count > 0 );
+			while ( state.Transparent && _gameStack.Count > 0 );
 
 			while ( s.Count > 0 )
 			{

@@ -22,6 +22,7 @@ namespace RLGame.Systems
 		public static SchedulingSystem SchedulingSystem { get; private set; }
 		public static Timeline Timeline { get; private set; }
 		public static InventorySystem InventorySystem { get; private set; }
+		public static MessageLog MessageLog { get; private set; }
 		private readonly int MAXMAPWIDTH;
 		private readonly int MAXMAPHEIGHT;
 		public Player Player;
@@ -33,14 +34,17 @@ namespace RLGame.Systems
 
 		public GameController( int maxMapWidth, int maxMapHeight ) {
 			Maps = new List<DungeonMap>();
+			MessageLog = new MessageLog();
+			SchedulingSystem = new SchedulingSystem();
+			Timeline = new Timeline();
+			InventorySystem = new InventorySystem();
+
 			MAXMAPWIDTH = maxMapWidth;
 			MAXMAPHEIGHT = maxMapHeight;
 		}
 
 		public void Init() {
-			SchedulingSystem = new SchedulingSystem();
-			Timeline = new Timeline();
-			InventorySystem = new InventorySystem();
+			
 			InventorySystem.Init();
 
 			Player = new Player() { X = -1, Y = -1 };
@@ -98,8 +102,8 @@ namespace RLGame.Systems
 				CurrentMap = Maps[newLevel - 1];
 
 			CurrentMap.PostLevelChange( down );
-			MainScreen.MessageLog.Clear();
-			MainScreen.MessageLog.Add( $"Entering level {CurrentMap.MapLevel}" );
+			GameController.MessageLog.Clear();
+			GameController.MessageLog.Add( $"Entering level {CurrentMap.MapLevel}" );
 			Timeline.Clear();
 			IsPlayerTurn = false;
 

@@ -111,6 +111,7 @@
     <Compile Include="Interfaces\IGameState.cs" />
     <Compile Include="Interfaces\IScheduleable.cs" />
     <Compile Include="Interfaces\IUpdateable.cs" />
+    <Compile Include="Interfaces\IWRandomizable.cs" />
     <Compile Include="Monsters\Kobold.cs" />
     <Compile Include="Monsters\Shade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

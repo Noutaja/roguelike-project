@@ -44,7 +44,7 @@ namespace RLGame.GameStates
 					PlayerControls.GameController = value;
 			}
 		}
-		public static MessageLog MessageLog { get; private set; }
+		
 		public static DungeonControls PlayerControls { get; private set; }
 
 		public MainScreen(bool transparent, bool pauses, RLRootConsole rootConsole) {
@@ -57,7 +57,6 @@ namespace RLGame.GameStates
 			_timeLineConsole = new RLConsole( TIMELINEWIDTH, TIMELINEHEIGHT );
 			
 			GameController = new GameController( MAPWIDTH, MAPHEIGHT );
-			MessageLog = new MessageLog();
 		}
 
 		public void Init() {
@@ -85,7 +84,6 @@ namespace RLGame.GameStates
 		}
 
 		public void OnRender() {
-
 			_mapConsole.Clear();
 			_statConsole.Clear();
 			_messageConsole.Clear();
@@ -94,7 +92,7 @@ namespace RLGame.GameStates
 			GameController.CurrentMap.Draw( _mapConsole, _statConsole, _timeLineConsole );
 			GameController.Player.Draw( _mapConsole, GameController.CurrentMap );
 			GameController.Player.DrawStats( _statConsole );
-			MessageLog.Draw( _messageConsole );
+			GameController.MessageLog.Draw( _messageConsole );
 			GameController.Timeline.Draw( _timeLineConsole );
 
 			RLConsole.Blit( _mapConsole, 0, 0, MAPWIDTH, MAPHEIGHT,
@@ -105,7 +103,6 @@ namespace RLGame.GameStates
 				_rootConsole, 0, Game.SCREENHEIGHT - MESSAGEHEIGHT );
 			RLConsole.Blit( _timeLineConsole, 0, 0, TIMELINEWIDTH, TIMELINEHEIGHT,
 				_rootConsole, 0, 0 );
-
 		}
 	}
 }

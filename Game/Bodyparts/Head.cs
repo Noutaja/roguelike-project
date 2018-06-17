@@ -13,7 +13,7 @@ namespace RLGame.Bodyparts
 		public int Strength = 1;
 		public Head( int maxHealth, bool isVital, int size) : base( maxHealth, isVital, size ) {
 			Name = "Head";
-			partType = BodypartType.Head;
+			PartType = BodypartType.Head;
 		}
 	}
 }

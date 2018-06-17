@@ -9,7 +9,7 @@ namespace RLGame.Interfaces
 {
 	public interface IBodypart
 	{
-		BodypartType partType { get; set; }
+		BodypartType PartType { get; set; }
 		string Name { get; set; }
 		int Health { get; set; }
 		int MaxHealth { get; set; }

@@ -46,14 +46,14 @@ namespace RLGame.Core
 			//Deal damage
 			if ( !_targets.Any() )
 			{
-				MainScreen.MessageLog.Add( $"  {_attacker.Name}'s {_name} missed" );
+				GameController.MessageLog.Add( $"  {_attacker.Name}'s {_name} missed" );
 				return;
 			}
 
 				foreach(Actor defender in _targets )
 				{
 					Bodypart bodypart = defender.TakeDamage( _damage, defender.GetBodypart( true ) );
-					MainScreen.MessageLog.Add( $"  {defender.Name}'s {bodypart.Name} was hit for {_damage} damage" );
+					GameController.MessageLog.Add( $"  {defender.Name}'s {bodypart.Name} was hit for {_damage} damage" );
 
 					if(defender is Player )
 					{
@@ -64,13 +64,13 @@ namespace RLGame.Core
 					{
 						if ( defender is Player )
 						{
-							MainScreen.MessageLog.Add( $"  {defender.Name} was killed, GAME OVER MAN!" );
+							GameController.MessageLog.Add( $"  {defender.Name} was killed, GAME OVER MAN!" );
 						}
 						else if ( defender is Monster )
 						{
 							MainScreen.GameController.CurrentMap.RemoveMonster( (Monster) defender );
 
-							MainScreen.MessageLog.Add( $"  {defender.Name} died." );
+							GameController.MessageLog.Add( $"  {defender.Name} died." );
 						}
 					}
 				}

@@ -133,6 +133,12 @@ namespace RLGame.Systems
 				GameController.CurrentMap.RemoveItem( item );
 				GameController.InventorySystem.AddItem( item );
 			}
+			else if ( IsPressed( RLKey.I ) )
+			{
+				InventoryScreen inventoryScreen = new InventoryScreen( false, true, _rootConsole );
+				inventoryScreen.Init();
+				Game.PushOnGameStack( inventoryScreen );
+			}
 			SystemKeys( key );
 			return false;
 		}

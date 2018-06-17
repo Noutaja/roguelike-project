@@ -146,7 +146,7 @@ namespace RLGame.Core
 		}
 
 		public Bodypart GetBodypart( BodypartType type) {
-			return Bodyparts.Find( bodypart => bodypart.partType == type );
+			return Bodyparts.Find( bodypart => bodypart.PartType == type );
 		}
 
 		public Bodypart GetBodypart( string bodypartName ) {
@@ -157,7 +157,7 @@ namespace RLGame.Core
 			Bodypart bodypart = null;
 			if ( sizeWeighted )
 			{
-				bodypart = GetWeightedBodypart( bodypart, Bodyparts );
+				bodypart = GetWeightedBodypart(Bodyparts);
 			}
 			else
 			{
@@ -171,7 +171,7 @@ namespace RLGame.Core
 			if ( sizeWeighted )
 			{
 				List<Bodypart> vitalBodyparts = Bodyparts.FindAll( bodypart => bodypart.IsVital == true );
-				vitalBodypart = GetWeightedBodypart( vitalBodypart, vitalBodyparts );
+				vitalBodypart = GetWeightedBodypart( vitalBodyparts );
 			}
 			else
 			{
@@ -239,16 +239,13 @@ namespace RLGame.Core
 			}
 		}
 
-		private Bodypart GetWeightedBodypart( Bodypart bodypart, List<Bodypart> bodyparts ) {
-			foreach ( Bodypart b in bodyparts )
+		private Bodypart GetWeightedBodypart(List<Bodypart> bodyparts) {
+			foreach ( Bodypart b in Bodyparts )
 			{
-				Game.WeightedRandom.Add( b, b.Size );
+				Game.WeightedRandom.Add( b, b.Weight );
 			}
-			bodypart = Game.WeightedRandom.NextWithReplacement();
-			foreach ( Bodypart b in bodyparts )
-			{
-				Game.WeightedRandom.Remove( b );
-			}
+			Bodypart bodypart =(Bodypart) Game.WeightedRandom.NextWithReplacement();
+			Game.WeightedRandom.Clear();
 			return bodypart;
 		}
 

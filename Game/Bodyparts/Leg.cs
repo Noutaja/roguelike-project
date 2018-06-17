@@ -11,7 +11,7 @@ namespace RLGame.Bodyparts
 	{
 		public Leg( int maxHealth, bool isVital, int size ) : base( maxHealth, isVital, size ) {
 			Name = "Leg";
-			partType = BodypartType.Leg;
+			PartType = BodypartType.Leg;
 		}
 	}
 }

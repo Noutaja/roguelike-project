@@ -214,6 +214,12 @@ namespace RLGame.Core
 			StairsUp.Draw( mapConsole, this );
 			StairsDown.Draw( mapConsole, this );
 
+			//Draw items
+			foreach ( Item item in Items )
+			{
+				item.Draw( mapConsole, this );
+			}
+
 			//Draw monsters
 			foreach ( Monster monster in Monsters )
 			{
@@ -233,12 +239,6 @@ namespace RLGame.Core
 					monster.DrawStats( statConsole, i );
 					i++;
 				}
-			}
-
-			//Draw items
-			foreach ( Item item in Items )
-			{
-				item.Draw( mapConsole, this );
 			}
 		}
 

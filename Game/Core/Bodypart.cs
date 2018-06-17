@@ -7,9 +7,8 @@ using RLGame.Interfaces;
 
 namespace RLGame.Core
 {
-	public class Bodypart : IBodypart
-	{
-		public BodypartType partType { get; set; }
+	public class Bodypart : IBodypart, IWRandomizable {
+		public BodypartType PartType { get; set; }
 		public string Name { get; set; }
 		private int _health { get; set; }
 		public int Health {
@@ -24,11 +23,15 @@ namespace RLGame.Core
 		public bool IsVital { get; set; }
 		public int Size { get; set; }
 
-		public Bodypart(int maxHealth, bool isVital, int size) {
+		public Bodypart( int maxHealth, bool isVital, int size ) {
 			MaxHealth = maxHealth;
 			Health = maxHealth;
 			IsVital = isVital;
 			Size = size;
+		}
+
+		//IWRandomizable
+		public int Weight { get { return Size; }
 		}
 	}
 }
