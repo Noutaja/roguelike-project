@@ -55,7 +55,9 @@ namespace RLGame.Systems
 					i--;
 				}
 			}
-			if ( !pressedKeys.Contains( keyPress.Key ) ) { pressedKeys.Add( keyPress.Key ); }
+
+			//Add currently pressed key to the list
+			if ( !pressedKeys.Contains( key ) ) { pressedKeys.Add( key ); }
 			lastDirection = CheckDirection(key);
 			controlState = CheckForState();
 
@@ -137,7 +139,7 @@ namespace RLGame.Systems
 			{
 				InventoryScreen inventoryScreen = new InventoryScreen( false, true, _rootConsole );
 				inventoryScreen.Init();
-				Game.PushOnGameStack( inventoryScreen );
+				Game.GameStack.Push( inventoryScreen );
 			}
 			SystemKeys( key );
 			return false;

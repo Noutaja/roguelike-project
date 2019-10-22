@@ -35,17 +35,9 @@ namespace RLGame.GameStates
 		private readonly int TIMELINEHEIGHT = 11;
 		private RLConsole _timeLineConsole;
 
-		private static GameController _gameController;
-		public static GameController GameController {
-			get { return _gameController; }
-			private set {
-				_gameController = value;
-				if ( PlayerControls != null )
-					PlayerControls.GameController = value;
-			}
-		}
+		public static GameController GameController { get; private set; }
 		
-		public static DungeonControls PlayerControls { get; private set; }
+		private DungeonControls PlayerControls { get; set; }
 
 		public MainScreen(bool transparent, bool pauses, RLRootConsole rootConsole) {
 			_rootConsole = rootConsole;

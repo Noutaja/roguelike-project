@@ -121,10 +121,15 @@
     <Compile Include="Systems\GameController.cs" />
     <Compile Include="Systems\InventorySystem.cs" />
     <Compile Include="Systems\MapGenerator.cs" />
+    <Compile Include="Systems\MenuControls.cs" />
     <Compile Include="Systems\MessageLog.cs" />
     <Compile Include="Systems\DungeonControls.cs" />
     <Compile Include="Systems\Timeline.cs" />
     <Compile Include="Systems\SchedulingSystem.cs" />
+    <Compile Include="UI\BasicItem.cs" />
+    <Compile Include="UI\InventoryUI.cs" />
+    <Compile Include="UI\Menu.cs" />
+    <Compile Include="UI\MenuItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

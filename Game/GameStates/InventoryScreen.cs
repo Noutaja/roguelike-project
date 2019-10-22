@@ -1,5 +1,6 @@
 ﻿using RLGame.Interfaces;
 using RLGame.Systems;
+using RLGame.UI;
 using RLNET;
 using System;
 using System.Collections.Generic;
@@ -25,18 +26,22 @@ namespace RLGame.GameStates
 		private readonly RLRootConsole _rootConsole;
 
 		private InventorySystem inventorySystem;
+		private MenuControls menuControls;
+		private InventoryUI inventoryUI;
 
 		public InventoryScreen(bool transparent, bool pauses, RLRootConsole rootConsole ) {
 			_rootConsole = rootConsole;
 			_inventoryConsole = new RLConsole( INVENTORYWIDTH, INVENTORYHEIGHT );
 			_messageConsole = new RLConsole( MESSAGEWIDTH, MESSAGEHEIGHT );
 			inventorySystem = GameController.InventorySystem;
+			inventoryUI = new InventoryUI(this);
+			menuControls = new MenuControls( rootConsole );
 			Transparent = transparent;
 			Pauses = pauses;
 		}
 
 		public void Close() {
-			
+			Game.GameStack.Pop();
 		}
 
 		public void Init() {
@@ -47,20 +52,28 @@ namespace RLGame.GameStates
 			_inventoryConsole.Clear();
 			_messageConsole.Clear();
 
+			DrawInventory( _inventoryConsole );
 			GameController.InventorySystem.Draw( _inventoryConsole );
 			GameController.MessageLog.Draw( _messageConsole );
 
 			RLConsole.Blit( _inventoryConsole, 0, 0, INVENTORYWIDTH, INVENTORYHEIGHT,
-				_rootConsole, 0, 12 );
+				_rootConsole, 0, 11 );
 			RLConsole.Blit( _messageConsole, 0, 0, MESSAGEWIDTH, MESSAGEHEIGHT,
 				_rootConsole, 0, Game.SCREENHEIGHT - MESSAGEHEIGHT );
 		}
 
 		public bool OnUpdate( RLKeyPress keyPress ) {
-			return true;
+				if ( keyPress != null )
+				{
+					menuControls.CheckInput( keyPress );
+					return true;
+				}
+			
+			
+			return false;
 		}
 
-		private void DrawInventory() {
+		private void DrawInventory( RLConsole console) {
 
 		}
 	}

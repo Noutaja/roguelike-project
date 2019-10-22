@@ -17,8 +17,7 @@ namespace RLGame
 		public static readonly int SCREENHEIGHT = 70;
 		private static RLRootConsole _rootConsole;
 
-		private static Stack<IGameState> _gameStack;
-		private static IGameState _newGameState;
+		public static Stack<IGameState> GameStack { get; private set; }
 
 		public static IRandom Random { get; private set; }
 		public static IWeightedRandomizer<IWRandomizable> WeightedRandom;
@@ -35,19 +34,14 @@ namespace RLGame
 
 			_rootConsole = new RLRootConsole( fontFileName, SCREENWIDTH, SCREENHEIGHT, 8, 8, 1f, consoleTitle );
 
-			_gameStack = new Stack<IGameState>();
-			_newGameState = null;
+			GameStack = new Stack<IGameState>();
 			MainScreen main = new MainScreen( false, true, _rootConsole );
 			main.Init();
-			_gameStack.Push( main );
+			GameStack.Push( main );
 			
 			_rootConsole.Update += OnRootConsoleUpdate;
 			_rootConsole.Render += OnRootConsoleRender;
 			_rootConsole.Run();
-		}
-
-		public static void PushOnGameStack(IGameState state ) {
-			_newGameState = state;
 		}
 
 		private static void OnRootConsoleUpdate( object sender, UpdateEventArgs e ) {
@@ -56,27 +50,18 @@ namespace RLGame
 			IGameState state = null;
 			do
 			{
-				state = _gameStack.Pop();
-				s.Push( state );
+				state = GameStack.Peek();
+				
 				if ( state.OnUpdate( keyPress ) )
 				{
-					while ( s.Count > 0 )
-					{
-						_gameStack.Push( s.Pop() );
-					}
-					return;
+					s.Push( GameStack.Pop() );
 				}
 			}
-			while ( !state.Pauses && _gameStack.Count > 0 );
+			while ( !state.Pauses && GameStack.Count > 0 );
 			
 			while(s.Count > 0 )
 			{
-				_gameStack.Push( s.Pop() );
-			}
-			if(_newGameState != null )
-			{
-				_gameStack.Push( _newGameState );
-				_newGameState = null;
+				GameStack.Push( s.Pop() );
 			}
 		}
 
@@ -85,15 +70,18 @@ namespace RLGame
 			IGameState state = null;
 			do
 			{
-				state = _gameStack.Pop();
-				s.Push( state );
+				state = GameStack.Peek();
 				state.OnRender();
+				if ( state.Transparent )
+				{
+					s.Push( GameStack.Pop() );
+				}
 			}
-			while ( state.Transparent && _gameStack.Count > 0 );
+			while ( !state.Pauses && GameStack.Count > 0 );
 
 			while ( s.Count > 0 )
 			{
-				_gameStack.Push( s.Pop() );
+				GameStack.Push( s.Pop() );
 			}
 
 			_rootConsole.Draw();
