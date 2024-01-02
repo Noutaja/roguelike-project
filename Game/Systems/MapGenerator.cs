@@ -53,7 +53,7 @@ namespace RLGame.Systems
 				var newRoom = new Rectangle( roomXPosition, roomYPosition,
 				  roomWidth, roomHeight );
 
-				//ENABLE IF STATEMENT TO HAVE MORE CONFINED ROOMS!
+				
 				if ( Game.Random.Next( 0, 9 ) < 1 )
 				{
 					// Check to see if the room rectangle intersects with any other rooms
